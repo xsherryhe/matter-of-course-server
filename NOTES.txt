@@ -1,0 +1,63 @@
+MATTER OF COURSE
+User (for logged in users)
+-devise
+-username
+-password
+-email
+-has many created courses class name Course
+-has many enrollments
+-has many enrolled courses through enrollments class name Course
+-has many assignment submissions (assigned when the student starts the lesson)
+
+Course
+-enum pending/open/closed
+-belongs to instructor class name User
+-has many enrollments
+-has many students through enrollments class name User
+-has many lessons
+-has many posts as postable
+
+Enrollment
+-belongs to enrolled course class name Course
+-belongs to student class name User
+
+Lesson
+-body
+-has many media (active storage/cloudinary)
+-has many assignments
+-has many posts as postable
+
+Media
+-belongs to lesson
+
+Assignment
+-body/instructions
+-belongs to lesson
+-has many assignment submissions
+
+AssignmentSubmission
+-enum incomplete complete
+-belongs to assignment
+-belongs to student
+-body
+-has many files (active storage/cloudinary)
+
+Message
+-has and belongs to many replies, class name Message
+-enum unread read
+-sender class name User
+-recipient class name User
+-body
+-send email with message body as parameter through Action Mailer
+-websocket for message notifications
+
+Post
+-belongs to postable
+-belongs to creator class name User
+-has many comments as reactable
+
+Comment
+-belongs to reactable
+-belongs to creator class name User
+-has many comments as reactable
+-body
