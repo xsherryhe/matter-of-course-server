@@ -7,15 +7,16 @@ class User < ApplicationRecord
   validates :username, presence: true,
                        uniqueness: { case_sensitive: false },
                        format: { with: /\A[a-zA-Z0-9_.#!$*?]*\Z/ }
-  validates :first_name, presence: true
-  validates :last_name, presence: true
+  validates :profile, presence: true
 
+  has_one :profile
   has_many :created_courses, class_name: 'Course', foreign_key: 'creator_id'
   has_and_belongs_to_many :instructed_courses,
                           class_name: 'Course',
                           join_table: :instructed_courses_instructors,
                           foreign_key: 'instructor_id',
                           association_foreign_key: 'instructed_course_id'
+  accepts_nested_attributes_for :profile
   attr_writer :login
 
   def login
@@ -32,5 +33,9 @@ class User < ApplicationRecord
     elsif attributes.any? { |attribute| conditions.key?(attribute) }
       find_by(conditions.to_h)
     end
+  end
+
+  def with_name
+    as_json.merge(name: profile.full_name)
   end
 end

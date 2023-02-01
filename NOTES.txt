@@ -1,18 +1,22 @@
 MATTER OF COURSE
 User (for logged in users)
--avatar
--first_name
--middle_name
--last_name
 -devise
 -username
 -password
 -email
+-has one profile
 -has many created courses class name Course
 -has and belongs to many instructed courses class name Course
 -has many enrollments
 -has many enrolled courses through enrollments class name Course
 -has many assignment submissions (assigned when the student starts the lesson)
+
+Profile
+-avatar
+-first_name
+-middle_name
+-last_name
+-belongs to user
 
 Course
 -title
