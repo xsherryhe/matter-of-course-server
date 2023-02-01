@@ -23,7 +23,7 @@ class User < ApplicationRecord
     @login || username || email
   end
 
-  def self.find_for_database_authentication
+  def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     attributes = %i[username email]
     attributes.each { |attribute| conditions[attribute]&.downcase! }

@@ -2,6 +2,8 @@ class RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
   before_action :configure_account_update_params, only: [:update]
 
+  include DeviseRespondable
+
   def create
     build_resource(sign_up_params)
 
@@ -23,20 +25,6 @@ class RegistrationsController < Devise::RegistrationsController
       respond_with_errors
     end
   end
-end
-
-private
-
-def respond_with_message(message)
-  data = [[resource_name, (resource.with_name || resource.as_json)], [:message, find_message(message)]].to_h
-  render json: data
-end
-
-def respond_with_errors
-  errors = resource.errors.each_with_object({}) do |error, hash|
-    (hash[error.attribute] ||= []) << error.message
-  end
-  render json: errors, status: :unprocessable_entity
 end
 
 def configure_sign_up_params
