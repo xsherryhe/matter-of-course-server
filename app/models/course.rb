@@ -11,9 +11,16 @@ class Course < ApplicationRecord
                           association_foreign_key: 'instructor_id'
   enum :status, %i[pending open closed], _default: :pending
 
-  scope :on_page, ->(page = 1) { all.order(title: :asc).limit(50).offset(50 * (page - 1)) }
+  scope :on_page, lambda { |page = 1|
+    all.includes([{ creator: :profile }, { instructors: :profile }])
+       .order(title: :asc).limit(50).offset(50 * (page - 1))
+  }
 
   attr_accessor :instructor_logins
+
+  def as_json(options)
+    super({ include: [creator: { methods: :name }, instructors: { methods: :name }] }.merge(options))
+  end
 
   private
 
@@ -27,7 +34,7 @@ class Course < ApplicationRecord
     new_instructors = instructor_logins.split(/, */).filter_map do |login|
       user = User.where(['lower(username) = :value OR lower(email) = :value',
                          { value: login.downcase }]).first
-      return errors.add(:instructors, 'have invalid usernames or emails') unless user
+      return errors.add(:instructor_logins, 'have invalid usernames or emails') unless user
 
       user
     end

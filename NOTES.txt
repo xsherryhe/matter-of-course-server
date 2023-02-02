@@ -1,3 +1,5 @@
+// TO DO: Extract form logic into higher order component
+
 MATTER OF COURSE
 User (for logged in users)
 //-devise
@@ -19,6 +21,7 @@ Profile
 //-belongs to user
 
 Course
+-thumbnail
 //-title
 //-description
 //-enum pending/open/closed
