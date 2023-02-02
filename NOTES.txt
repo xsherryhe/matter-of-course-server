@@ -1,5 +1,3 @@
-// TO DO: Extract form logic into higher order component
-
 MATTER OF COURSE
 User (for logged in users)
 //-devise
@@ -38,6 +36,7 @@ Enrollment
 
 Lesson
 -body
+-belongs to course
 -has many media (active storage/cloudinary)
 -has many assignments
 -has many posts as postable

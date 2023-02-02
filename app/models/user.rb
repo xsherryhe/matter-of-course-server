@@ -39,7 +39,7 @@ class User < ApplicationRecord
     profile.full_name
   end
 
-  def as_json(options)
+  def as_json(options = {})
     super({ methods: :name }.merge(options))
   end
 end
