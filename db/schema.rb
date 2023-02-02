@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_01_175807) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_02_000255) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -27,6 +27,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_01_175807) do
   create_table "instructed_courses_instructors", id: false, force: :cascade do |t|
     t.bigint "instructed_course_id", null: false
     t.bigint "instructor_id", null: false
+    t.index ["instructed_course_id", "instructor_id"], name: "unique_index", unique: true
     t.index ["instructed_course_id"], name: "index_instructed_courses_instructors_on_instructed_course_id"
     t.index ["instructor_id"], name: "index_instructed_courses_instructors_on_instructor_id"
   end

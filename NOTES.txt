@@ -1,29 +1,29 @@
 MATTER OF COURSE
 User (for logged in users)
--devise
--username
--password
--email
--has one profile
--has many created courses class name Course
--has and belongs to many instructed courses class name Course
+//-devise
+//-username
+//-password
+//-email
+//-has one profile
+//-has many created courses class name Course
+//-has and belongs to many instructed courses class name Course
 -has many enrollments
 -has many enrolled courses through enrollments class name Course
 -has many assignment submissions (assigned when the student starts the lesson)
 
 Profile
 -avatar
--first_name
--middle_name
--last_name
--belongs to user
+//-first_name
+//-middle_name
+//-last_name
+//-belongs to user
 
 Course
--title
--description
--enum pending/open/closed
--belongs to creator class name User
--has and belongs to many instructors class name User (auto add creator as instructor)
+//-title
+//-description
+//-enum pending/open/closed
+//-belongs to creator class name User
+//-has and belongs to many instructors class name User (auto add creator as instructor)
 -has many enrollments
 -has many students through enrollments class name User
 -has many lessons
@@ -75,6 +75,7 @@ Comment
 -body
 
 // TO DO: Set default_url_options in production
+// TO DO: Other devise routes (e.g. edit account, forgot password)
 // TO DO: Delete unused devise views and routes
 // TO DO: Fade in animation of homepage
 // TO DO: Password validation

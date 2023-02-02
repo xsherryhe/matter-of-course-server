@@ -6,4 +6,12 @@ class ApplicationRecord < ActiveRecord::Base
       (hash[error.attribute] ||= []) << error.message
     end
   end
+
+  private
+
+  def add_unique(association, records)
+    records.each do |record|
+      association << record unless association.exists?(record.id) || association.include?(record)
+    end
+  end
 end
