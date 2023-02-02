@@ -13,9 +13,16 @@ class Course < ApplicationRecord
   has_many :lessons
   enum :status, %i[pending open closed], _default: :pending
 
+  scope :with_includes, -> { includes([{ creator: :profile }, { instructors: :profile }]) }
   scope :on_page, lambda { |page = 1|
-    all.includes([{ creator: :profile }, { instructors: :profile }])
-       .order(title: :asc).limit(50).offset(50 * (page - 1))
+    all.with_includes.where(status: :open).order(title: :asc).limit(50).offset(50 * (page - 1))
+  }
+  scope :authorized_for, lambda { |user|
+    table = joins(:instructors)
+    table.where(status: :open)
+         .or(table.where(creator: user))
+         .or(table.where("instructed_courses_instructors.instructor_id": user.id))
+         .with_includes
   }
 
   attr_accessor :instructor_logins

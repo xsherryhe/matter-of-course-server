@@ -39,7 +39,15 @@ class User < ApplicationRecord
     profile.full_name
   end
 
+  def all_courses(user)
+    { created: created_courses, instructed: instructed_courses }.transform_values do |courses|
+      user ? courses.authorized_for(user) : courses.open
+    end
+  end
+
   def as_json(options = {})
-    super({ methods: :name }.merge(options))
+    json = super({ methods: :name }.merge(options))
+    %i[all_courses].each { |key| json[key] = options[key] if options.key?(key) }
+    json
   end
 end

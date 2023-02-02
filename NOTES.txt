@@ -1,3 +1,5 @@
+//TO DO: edit/update and destroy actions for courses
+
 MATTER OF COURSE
 User (for logged in users)
 //-devise
