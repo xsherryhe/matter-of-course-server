@@ -17,15 +17,14 @@ class CoursesController < ApplicationController
 
   def show
     @course = Course.find(params[:id])
-    authorized = @course.authorized_to_edit?(current_user)
 
-    unless @course.open? || authorized
+    unless current_user.authorized_for?(@course)
       return respond_with @course, only: :status, include: [creator: { methods: :name }], status: :unauthorized
     end
 
     respond_with @course,
                  include: [{ creator: { methods: :name } }, { instructors: { methods: :name } }, :lessons],
-                 authorized:
+                 authorized: current_user.authorized_to_edit?(@course)
   end
 
   private

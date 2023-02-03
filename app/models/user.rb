@@ -9,8 +9,8 @@ class User < ApplicationRecord
                        format: { with: /\A[a-zA-Z0-9_.#!$*?]*\Z/ }
   validates :profile, presence: true
 
-  has_one :profile
-  has_many :created_courses, class_name: 'Course', foreign_key: 'creator_id'
+  has_one :profile, dependent: :destroy
+  has_many :created_courses, class_name: 'Course', foreign_key: 'creator_id', dependent: :nullify
   has_and_belongs_to_many :instructed_courses,
                           class_name: 'Course',
                           join_table: :instructed_courses_instructors,
@@ -41,8 +41,16 @@ class User < ApplicationRecord
 
   def all_courses(user)
     { created: created_courses, instructed: instructed_courses }.transform_values do |courses|
-      user ? courses.authorized_for(user) : courses.open
+      courses.authorized_for(user)
     end
+  end
+
+  def authorized_for?(course)
+    course.open? || authorized_to_edit?(course)
+  end
+
+  def authorized_to_edit?(course)
+    course.creator == self || course.instructors.exists?(id)
   end
 
   def as_json(options = {})
