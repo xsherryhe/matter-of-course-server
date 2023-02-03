@@ -10,7 +10,7 @@ class User < ApplicationRecord
   validates :profile, presence: true
 
   has_one :profile, dependent: :destroy
-  has_many :created_courses, class_name: 'Course', foreign_key: 'creator_id', dependent: :nullify
+  has_many :hosted_courses, class_name: 'Course', foreign_key: 'host_id', dependent: :restrict_with_error
   has_and_belongs_to_many :instructed_courses,
                           class_name: 'Course',
                           join_table: :instructed_courses_instructors,
@@ -40,7 +40,7 @@ class User < ApplicationRecord
   end
 
   def all_courses(user)
-    { created: created_courses, instructed: instructed_courses }.transform_values do |courses|
+    { hosted: hosted_courses, instructed: instructed_courses }.transform_values do |courses|
       courses.authorized_for(user)
     end
   end
@@ -50,7 +50,7 @@ class User < ApplicationRecord
   end
 
   def authorized_to_edit?(course)
-    course.creator == self || course.instructors.exists?(id)
+    course.host == self || course.instructors.exists?(id)
   end
 
   def as_json(options = {})

@@ -7,7 +7,7 @@ class CoursesController < ApplicationController
   end
 
   def create
-    @course = current_user.created_courses.build(course_params)
+    @course = current_user.hosted_courses.build(course_params)
     if @course.save
       respond_with @course
     else
@@ -19,11 +19,11 @@ class CoursesController < ApplicationController
     @course = Course.find(params[:id])
 
     unless current_user.authorized_for?(@course)
-      return respond_with @course, only: :status, include: [creator: { methods: :name }], status: :unauthorized
+      return respond_with @course, only: :status, include: [host: { methods: :name }], status: :unauthorized
     end
 
     respond_with @course,
-                 include: [{ creator: { methods: :name } }, { instructors: { methods: :name } }, :lessons],
+                 include: [{ host: { methods: :name } }, { instructors: { methods: :name } }, :lessons],
                  authorized: current_user.authorized_to_edit?(@course)
   end
 

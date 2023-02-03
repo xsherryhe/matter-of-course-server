@@ -10,18 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_03_003342) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_03_020751) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "courses", force: :cascade do |t|
     t.integer "status", default: 0, null: false
-    t.bigint "creator_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "title"
     t.text "description"
-    t.index ["creator_id"], name: "index_courses_on_creator_id"
+    t.bigint "host_id", null: false
+    t.index ["host_id"], name: "index_courses_on_host_id"
   end
 
   create_table "instructed_courses_instructors", id: false, force: :cascade do |t|
@@ -65,7 +65,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_03_003342) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
-  add_foreign_key "courses", "users", column: "creator_id"
+  add_foreign_key "courses", "users", column: "host_id"
   add_foreign_key "lessons", "courses"
   add_foreign_key "profiles", "users"
 end

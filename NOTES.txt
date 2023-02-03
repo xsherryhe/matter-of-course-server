@@ -1,5 +1,6 @@
 //TO DO: edit/update and destroy actions for courses
 
+
 MATTER OF COURSE
 User (for logged in users)
 //-devise
@@ -38,7 +39,7 @@ Enrollment
 
 Lesson
 -body
--belongs to course
+-belongs to course 
 -has many media (active storage/cloudinary)
 -has many assignments
 -has many posts as postable
@@ -80,6 +81,7 @@ Comment
 
 // TO DO: Set default_url_options in production
 // TO DO: Other devise routes (e.g. edit account, forgot password)
+  //for destroy user, make them change the host of the courses and show error if hosts are not changed (destroy returns false)
 // TO DO: Delete unused devise views and routes
 // TO DO: Fade in animation of homepage
 // TO DO: Password validation
