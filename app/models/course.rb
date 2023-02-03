@@ -1,5 +1,5 @@
 class Course < ApplicationRecord
-  before_validation :add_hostt_as_instructor, only: %i[create]
+  before_validation :add_host_as_instructor, only: %i[create]
   before_validation :set_instructors
   validates :title, presence: true
   validates :description, presence: true
@@ -30,7 +30,11 @@ class Course < ApplicationRecord
   attr_accessor :instructor_logins
 
   def as_json(options = {})
-    super({ include: [host: { methods: :name }, instructors: { methods: :name }] }.merge(options))
+    super({ include: [{ host: { methods: :name } }, { instructors: { methods: :name } }] }.merge(options))
+  end
+
+  def as_json_with_details(options = {})
+    as_json({ include: [{ host: { methods: :name } }, { instructors: { methods: :name } }, :lessons] }.merge(options))
       .merge(options.key?(:authorized) ? { authorized: options[:authorized] } : {})
   end
 
@@ -39,7 +43,7 @@ class Course < ApplicationRecord
   end
 
   def authorized_to_edit?(user)
-    user&.authorized_to_edit?(course)
+    user&.authorized_to_edit?(self)
   end
 
   private
@@ -62,7 +66,7 @@ class Course < ApplicationRecord
   end
 
   def open_with_lessons
-    return unless course.open? && !course.lessons.exists?
+    return unless open? && !lessons.exists?
 
     errors.add(:base, 'You must have at least one lesson to open the course.')
   end

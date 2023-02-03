@@ -1,30 +1,39 @@
 class CoursesController < ApplicationController
-  before_action :authenticate_user!, only: %i[create]
+  before_action :authenticate_user!, only: %i[create update]
 
   def index
     @courses = Course.on_page(params[:page] || 1)
     respond_with @courses
   end
 
+  def show
+    @course = Course.find(params[:id])
+
+    unless @course.authorized_for?(current_user)
+      return respond_with @course, only: :status, include: [host: { methods: :name }], status: :unauthorized
+    end
+
+    render json: @course.as_json_with_details(authorized: current_user&.authorized_to_edit?(@course))
+  end
+
   def create
     @course = current_user.hosted_courses.build(course_params)
     if @course.save
-      respond_with @course
+      render json: @course.as_json_with_details(authorized: true)
     else
       render json: @course.simplified_errors, status: :unprocessable_entity
     end
   end
 
-  def show
+  def update
     @course = Course.find(params[:id])
+    return head :unauthorized unless current_user.authorized_to_edit?(@course)
 
-    unless current_user.authorized_for?(@course)
-      return respond_with @course, only: :status, include: [host: { methods: :name }], status: :unauthorized
+    if @course.update(course_params)
+      render json: @course.as_json_with_details(authorized: true)
+    else
+      render json: @course.simplified_errors, status: :unprocessable_entity
     end
-
-    respond_with @course,
-                 include: [{ host: { methods: :name } }, { instructors: { methods: :name } }, :lessons],
-                 authorized: current_user.authorized_to_edit?(@course)
   end
 
   private

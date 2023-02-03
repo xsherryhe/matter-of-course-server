@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   def show
     @user = params[:id] ? User.find(params[:id]) : current_user
-    respond_with false unless @user
+    return respond_with false unless @user
 
     methods = {}
     if params[:with]
