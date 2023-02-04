@@ -30,7 +30,7 @@ class Course < ApplicationRecord
          .with_includes
   }
 
-  attr_accessor :instructor_logins, :instructor_logins_by_validity
+  attr_accessor :instructor_logins, :instructor_logins_by_validity, :invitation_sender
 
   def as_json(options = {})
     super({ include: [{ host: { methods: :name } }, { instructors: { methods: :name } }] }.merge(options))
@@ -80,7 +80,7 @@ class Course < ApplicationRecord
   end
 
   def build_and_check_instructor_invitation(user, login)
-    invitation = instruction_invitations.build(sender: current_user, recipient: user)
+    invitation = instruction_invitations.build(sender: invitation_sender, recipient: user)
     if invitation.valid?
       instructor_logins_by_validity[:valid] << login
     else

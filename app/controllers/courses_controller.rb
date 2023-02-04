@@ -29,7 +29,7 @@ class CoursesController < ApplicationController
     @course = Course.find(params[:id])
     return head :unauthorized unless current_user.authorized_to_edit?(@course)
 
-    if @course.update(course_params)
+    if @course.update(course_params.merge(invitation_sender: current_user))
       render json: @course.as_json_with_details(authorized: true)
     else
       render json: @course.simplified_errors, status: :unprocessable_entity

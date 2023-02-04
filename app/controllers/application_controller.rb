@@ -4,7 +4,8 @@ class ApplicationController < ActionController::Base
   after_action :send_csrf_token
 
   rescue_from ActiveRecord::RecordNotFound do
-    render json: { error: "This #{controller_name.singularize} no longer exists." }, status: :unprocessable_entity
+    render json: { error: "This #{controller_name.singularize.humanize.downcase} no longer exists." },
+           status: :unprocessable_entity
   end
 
   private

@@ -13,4 +13,12 @@ class InstructionInvitationsController < ApplicationController
     @invitation.accepted! if params[:accept]
     head :ok
   end
+
+  def destroy
+    @invitation = InstructionInvitation.find(params[:id])
+    return head :unauthorized unless current_user == @invitation.recipient
+
+    @invitation.destroy
+    head :ok
+  end
 end
