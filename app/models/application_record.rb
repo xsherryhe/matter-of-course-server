@@ -11,6 +11,8 @@ class ApplicationRecord < ActiveRecord::Base
 
   def add_unique(association, records)
     records.each do |record|
+      next unless record
+
       association << record unless association.exists?(record.id) || association.include?(record)
     end
   end

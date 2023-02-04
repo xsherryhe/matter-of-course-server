@@ -16,6 +16,8 @@ class User < ApplicationRecord
                           join_table: :instructed_courses_instructors,
                           foreign_key: 'instructor_id',
                           association_foreign_key: 'instructed_course_id'
+  has_many :sent_instruction_invitations, class_name: 'InstructionInvitation', foreign_key: 'sender_id'
+  has_many :received_instruction_invitations, class_name: 'InstructionInvitation', foreign_key: 'recipient_id'
   accepts_nested_attributes_for :profile
   attr_writer :login
 
@@ -23,13 +25,17 @@ class User < ApplicationRecord
     @login || username || email
   end
 
+  def self.find_by_login(login)
+    where(['lower(username) = :value OR lower(email) = :value',
+           { value: login.downcase }]).first
+  end
+
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     attributes = %i[username email]
     attributes.each { |attribute| conditions[attribute]&.downcase! }
     if (login = conditions.delete(:login))
-      where(conditions.to_h).where(['lower(username) = :value OR lower(email) = :value',
-                                    { value: login.downcase }]).first
+      where(conditions.to_h).find_by_login(login)
     elsif attributes.any? { |attribute| conditions.key?(attribute) }
       find_by(conditions.to_h)
     end

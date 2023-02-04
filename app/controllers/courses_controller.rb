@@ -36,6 +36,14 @@ class CoursesController < ApplicationController
     end
   end
 
+  def destroy
+    @course = Course.find(params[:id])
+    return head :unauthorized unless current_user.authorized_to_edit?(@course)
+
+    @course.destroy
+    render json: { message: 'This course no longer exists.' }
+  end
+
   private
 
   def course_params

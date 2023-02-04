@@ -1,8 +1,6 @@
-//TO DO: Add extra higher order component with function to validate 
-  // whether user is already signed in on attempted log in and sign up pages
-  // -> involves a fetch call to current user
-//TO DO: edit/update and destroy actions for courses
-
+//TO DO: instructor invitations and routes (eg remove instructor)
+  --Build custom handleFieldErrors and defaultValues fn on front end
+//TO DO: lesson routes 
 
 MATTER OF COURSE
 User (for logged in users)
@@ -11,8 +9,10 @@ User (for logged in users)
 //-password
 //-email
 //-has one profile
-//-has many created courses class name Course
+//-has many hosted courses class name Course
 //-has and belongs to many instructed courses class name Course
+-has many sent instruction invitations
+-has many received instruction invitations
 -has many enrollments
 -has many enrolled courses through enrollments class name Course
 -has many assignment submissions (assigned when the student starts the lesson)
@@ -31,10 +31,18 @@ Course
 //-enum pending/open/closed
 //-belongs to creator class name User
 //-has and belongs to many instructors class name User (auto add creator as instructor)
+-has many instruction invitations
 -has many enrollments
 -has many students through enrollments class name User
 -has many lessons
 -has many posts as postable
+
+InstructionInvitation
+-enum pending accepted
+-belongs to course
+-belongs to sender, class name User
+-belongs to recipient, class name User
+-once accepted, recipient is instructor of course
 
 Enrollment
 -belongs to enrolled course class name Course
@@ -82,6 +90,7 @@ Comment
 -has many comments as reactable
 -body
 
+// TO DO: Error catching from fetcher
 // TO DO: Set default_url_options in production
 // TO DO: Other devise routes (e.g. edit account, forgot password)
   //for destroy user, make them change the host of the courses and show error if hosts are not changed (destroy returns false)
