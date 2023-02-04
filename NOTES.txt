@@ -1,5 +1,6 @@
-//TO DO: instructor invitations and routes (eg remove instructor)
-  --Build custom handleFieldErrors and defaultValues fn on front end
+//TO DO: instructor invitations and routes
+  --decline invitation
+  --remove instructor (instructors_controller)
 //TO DO: lesson routes 
 
 MATTER OF COURSE
@@ -98,3 +99,4 @@ Comment
 // TO DO: Fade in animation of homepage
 // TO DO: Password validation
 // TO DO: Subject/category tags for courses
+// TO DO: Page scrolling through items with 50 or more

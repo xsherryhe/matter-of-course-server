@@ -7,6 +7,13 @@ class InstructionInvitation < ApplicationRecord
 
   enum :response, %i[pending accepted], _default: :pending
 
+  scope :on_page, ->(page = 1) { pending.order(created_at: :desc).limit(50).offset(50 * (page - 1)) }
+
+  def accepted!
+    super
+    add_unique(course.instructors, [recipient])
+  end
+
   private
 
   def recipient_not_yet_authorized

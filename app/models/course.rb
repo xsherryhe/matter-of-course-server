@@ -17,7 +17,7 @@ class Course < ApplicationRecord
 
   scope :with_includes, -> { includes([{ host: :profile }, { instructors: :profile }]) }
   scope :on_page, lambda { |page = 1|
-    all.with_includes.where(status: :open).order(title: :asc).limit(50).offset(50 * (page - 1))
+    open.with_includes.order(title: :asc).limit(50).offset(50 * (page - 1))
   }
   scope :authorized_for, lambda { |user|
     return where(status: :open) unless user
@@ -39,9 +39,9 @@ class Course < ApplicationRecord
   def as_json_with_details(options = {})
     authorized = options[:authorized]
     as_json({
-      include: [{ host: { methods: :name } }, { instructors: { methods: :name } }, :lessons] +
-                (authorized ? [instruction_invitations: { include: :recipient }] : [])
+      include: [{ host: { methods: :name } }, { instructors: { methods: :name } }, :lessons]
     }.merge(options))
+      .merge(authorized ? instruction_invitations_as_json : {})
       .merge(options.key?(:authorized) ? { authorized: } : {})
   end
 
@@ -59,6 +59,10 @@ class Course < ApplicationRecord
 
   private
 
+  def instruction_invitations_as_json
+    { instruction_invitations: instruction_invitations.pending.as_json(include: :recipient) }
+  end
+
   def add_host_as_instructor
     add_unique(instructors, [host])
   end
@@ -67,7 +71,7 @@ class Course < ApplicationRecord
     self.instructor_logins_by_validity = { valid: [], invalid: {} }
     return unless instructor_logins
 
-    instructor_logins.split(/, */).uniq. each do |login|
+    instructor_logins.split(/, */).uniq.each do |login|
       user = User.find_by_login(login)
       next instructor_logins_by_validity[:invalid][login] = 'is an invalid username or email' unless user
 
@@ -76,7 +80,7 @@ class Course < ApplicationRecord
   end
 
   def build_and_check_instructor_invitation(user, login)
-    invitation = instruction_invitations.build(sender: host, recipient: user)
+    invitation = instruction_invitations.build(sender: current_user, recipient: user)
     if invitation.valid?
       instructor_logins_by_validity[:valid] << login
     else
