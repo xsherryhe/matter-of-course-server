@@ -3,6 +3,7 @@ class Course < ApplicationRecord
   before_validation :build_and_check_instructor_invitations
   validates :title, presence: true
   validates :description, presence: true
+  validates :instructors, presence: true
   validate :valid_instructor_logins
   validate :open_with_lessons
   belongs_to :host, class_name: 'User'
@@ -30,7 +31,7 @@ class Course < ApplicationRecord
          .with_includes
   }
 
-  attr_accessor :instructor_logins, :instructor_logins_by_validity, :invitation_sender
+  attr_accessor :editor, :instructor_logins, :instructor_logins_by_validity
 
   def as_json(options = {})
     super({ include: [{ host: { methods: :name } }, { instructors: { methods: :name } }] }.merge(options))
@@ -43,6 +44,7 @@ class Course < ApplicationRecord
     }.merge(options))
       .merge(authorized ? instruction_invitations_as_json : {})
       .merge(options.key?(:authorized) ? { authorized: } : {})
+      .merge(options.key?(:hosted) ? { hosted: options[:hosted] } : {})
   end
 
   def authorized_for?(user)
@@ -51,6 +53,10 @@ class Course < ApplicationRecord
 
   def authorized_to_edit?(user)
     user&.authorized_to_edit?(self)
+  end
+
+  def single_instructor?
+    instructors.size == 1
   end
 
   def simplified_errors
@@ -80,7 +86,7 @@ class Course < ApplicationRecord
   end
 
   def build_and_check_instructor_invitation(user, login)
-    invitation = instruction_invitations.build(sender: invitation_sender, recipient: user)
+    invitation = instruction_invitations.build(sender: editor, recipient: user)
     if invitation.valid?
       instructor_logins_by_validity[:valid] << login
     else

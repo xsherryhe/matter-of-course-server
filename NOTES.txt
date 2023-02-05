@@ -1,6 +1,6 @@
 //TO DO: instructor invitations and routes
-  --decline invitation
-  --remove instructor (instructors_controller)
+  --remove instructor (instructors_controller) -- remove self as instructor
+  --validate not sending an invite more than once
 //TO DO: lesson routes 
 
 MATTER OF COURSE
