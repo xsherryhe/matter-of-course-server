@@ -42,7 +42,7 @@ class CoursesController < ApplicationController
     return head :unauthorized unless current_user.authorized_to_edit?(@course)
 
     @course.destroy
-    render json: { message: 'This course no longer exists.' }
+    head :ok
   end
 
   private

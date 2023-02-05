@@ -12,7 +12,7 @@ class Course < ApplicationRecord
                           join_table: :instructed_courses_instructors,
                           foreign_key: 'instructed_course_id',
                           association_foreign_key: 'instructor_id'
-  has_many :instruction_invitations
+  has_many :instruction_invitations, dependent: :destroy
   has_many :lessons, dependent: :destroy
   enum :status, %i[pending open closed], _default: :pending
 

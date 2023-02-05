@@ -3,6 +3,7 @@ class InstructionInvitation < ApplicationRecord
   belongs_to :sender, class_name: 'User'
   belongs_to :recipient, class_name: 'User'
 
+  validate :recipient_not_yet_invited
   validate :recipient_not_yet_authorized
 
   enum :response, %i[pending accepted], _default: :pending
@@ -15,6 +16,12 @@ class InstructionInvitation < ApplicationRecord
   end
 
   private
+
+  def recipient_not_yet_invited
+    return unless pending? && recipient.received_instruction_invitations.pending.exists?(course:)
+
+    errors.add(:recipient, 'has already received an invitation')
+  end
 
   def recipient_not_yet_authorized
     return unless pending? && recipient.authorized_to_edit?(course)
