@@ -27,6 +27,8 @@ class RegistrationsController < Devise::RegistrationsController
   end
 end
 
+private
+
 def configure_sign_up_params
   devise_parameter_sanitizer.permit :sign_up,
                                     keys: [profile_attributes: %i[first_name middle_name last_name]]

@@ -52,7 +52,7 @@ class Course < ApplicationRecord
   end
 
   def authorized_to_edit?(user)
-    user&.authorized_to_edit?(self)
+    user && (host == user || instructors.exists?(user.id))
   end
 
   def single_instructor?

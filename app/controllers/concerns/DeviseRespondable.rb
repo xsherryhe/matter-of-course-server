@@ -6,7 +6,7 @@ module DeviseRespondable
     render json: data
   end
 
-  def respond_with_errors
-    render json: resource.simplified_errors, status: :unprocessable_entity
+  def respond_with_errors(options = {})
+    render json: resource.simplified_errors(options), status: :unprocessable_entity
   end
 end

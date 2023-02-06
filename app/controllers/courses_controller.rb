@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-  before_action :authenticate_user!, only: %i[create update]
+  before_action :authenticate_user!, only: %i[create update destroy]
 
   def index
     @courses = Course.on_page(params[:page] || 1)

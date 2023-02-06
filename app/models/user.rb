@@ -55,8 +55,8 @@ class User < ApplicationRecord
     course.open? || authorized_to_edit?(course)
   end
 
-  def authorized_to_edit?(course)
-    course.host == self || course.instructors.exists?(id)
+  def authorized_to_edit?(resource)
+    resource.authorized_to_edit?(self)
   end
 
   def as_json(options = {})

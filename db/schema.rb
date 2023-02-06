@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_04_024211) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_06_205947) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -44,12 +44,22 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_024211) do
     t.index ["sender_id"], name: "index_instruction_invitations_on_sender_id"
   end
 
-  create_table "lessons", force: :cascade do |t|
+  create_table "lesson_sections", force: :cascade do |t|
+    t.string "title"
     t.text "body"
+    t.integer "order"
+    t.bigint "lesson_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lesson_id"], name: "index_lesson_sections_on_lesson_id"
+  end
+
+  create_table "lessons", force: :cascade do |t|
     t.bigint "course_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "title"
+    t.integer "order"
     t.index ["course_id"], name: "index_lessons_on_course_id"
   end
 
@@ -81,6 +91,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_04_024211) do
   add_foreign_key "instruction_invitations", "courses"
   add_foreign_key "instruction_invitations", "users", column: "recipient_id"
   add_foreign_key "instruction_invitations", "users", column: "sender_id"
+  add_foreign_key "lesson_sections", "lessons"
   add_foreign_key "lessons", "courses"
   add_foreign_key "profiles", "users"
 end

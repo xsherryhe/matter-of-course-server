@@ -1,4 +1,7 @@
-//TO DO: lesson routes 
+//TO DO: lesson sections and lesson routes 
+--UI to order and re-order lessons within course
+--back button from lesson / lesson form to course
+--remove lesson
 
 MATTER OF COURSE
 User (for logged in users)
@@ -9,8 +12,8 @@ User (for logged in users)
 //-has one profile
 //-has many hosted courses class name Course
 //-has and belongs to many instructed courses class name Course
--has many sent instruction invitations
--has many received instruction invitations
+//-has many sent instruction invitations
+//-has many received instruction invitations
 -has many enrollments
 -has many enrolled courses through enrollments class name Course
 -has many assignment submissions (assigned when the student starts the lesson)
@@ -29,29 +32,37 @@ Course
 //-enum pending/open/closed
 //-belongs to creator class name User
 //-has and belongs to many instructors class name User (auto add creator as instructor)
--has many instruction invitations
+//-has many instruction invitations
 -has many enrollments
 -has many students through enrollments class name User
--has many lessons
+//-has many lessons
 -has many posts as postable
 
-InstructionInvitation
--enum pending accepted
--belongs to course
--belongs to sender, class name User
--belongs to recipient, class name User
--once accepted, recipient is instructor of course
+//InstructionInvitation
+//-enum pending accepted
+//-belongs to course
+//-belongs to sender, class name User
+//-belongs to recipient, class name User
+//-once accepted, recipient is instructor of course
 
 Enrollment
 -belongs to enrolled course class name Course
 -belongs to student class name User
 
 Lesson
--body
--belongs to course 
--has many media (active storage/cloudinary)
+-title
+-order
+//-belongs to course 
+//-has many lesson_sections
 -has many assignments
 -has many posts as postable
+
+LessonSection
+//-title
+//-body
+//-order
+//-belongs to lesson
+-has many media (active storage/cloudinary)
 
 Media
 -belongs to lesson
