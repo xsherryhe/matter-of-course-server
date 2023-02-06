@@ -1,5 +1,6 @@
 //TO DO: lesson sections and lesson routes 
 --UI to order and re-order lessons within course
+  --use higher level component withOrderAndDestroy
 --back button from lesson / lesson form to course
 --remove lesson
 
@@ -99,6 +100,7 @@ Comment
 -has many comments as reactable
 -body
 
+// TO DO: UI to change status of course (e.g from pending to open, open to closed)
 // TO DO: Error catching from fetcher
 // TO DO: Set default_url_options in production
 // TO DO: Other devise routes (e.g. edit account, forgot password)

@@ -35,7 +35,8 @@ class Lesson < ApplicationRecord
   private
 
   def logical_lesson_sections_order
-    return if lesson_sections.sort_by(&:order).map(&:order) == (1..lesson_sections.size).to_a
+    remaining_lesson_sections = lesson_sections.reject(&:marked_for_destruction?)
+    return if remaining_lesson_sections.sort_by(&:order).map(&:order) == (1..remaining_lesson_sections.size).to_a
 
     errors.add(:lesson_sections, 'do not follow logical numbering order')
   end

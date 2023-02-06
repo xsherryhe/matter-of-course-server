@@ -14,7 +14,9 @@ class LessonSection < ApplicationRecord
   private
 
   def unique_order_in_lesson
-    return if lesson.lesson_sections.count { |section| section.order == order } == 1
+    return if lesson.lesson_sections
+                    .reject(&:marked_for_destruction?)
+                    .count { |section| section.order == order } == 1
 
     errors.add(:order, 'is the same as a different section')
   end
