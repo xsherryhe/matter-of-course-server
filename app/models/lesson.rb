@@ -2,10 +2,10 @@ class Lesson < ApplicationRecord
   validates :title, presence: true
   validates :order, presence: true
   validates :lesson_sections, presence: true
+  validate :unique_order_in_course
   validate :logical_lesson_sections_order
   belongs_to :course
   has_many :lesson_sections, dependent: :destroy
-
   accepts_nested_attributes_for :lesson_sections, allow_destroy: true
 
   def as_json_with_details(options = {})
@@ -33,6 +33,14 @@ class Lesson < ApplicationRecord
   end
 
   private
+
+  def unique_order_in_course
+    return if course.lessons
+                    .reject(&:marked_for_destruction?)
+                    .count { |lesson| lesson.order == order } == 1
+
+    errors.add(:order, 'is the same as a different section')
+  end
 
   def logical_lesson_sections_order
     remaining_lesson_sections = lesson_sections.reject(&:marked_for_destruction?)

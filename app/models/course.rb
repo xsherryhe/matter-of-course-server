@@ -5,6 +5,7 @@ class Course < ApplicationRecord
   validates :description, presence: true
   validates :instructors, presence: true
   validate :valid_instructor_logins
+  validate :logical_lessons_order
   validate :open_with_lessons
   belongs_to :host, class_name: 'User'
   has_and_belongs_to_many :instructors,
@@ -14,6 +15,8 @@ class Course < ApplicationRecord
                           association_foreign_key: 'instructor_id'
   has_many :instruction_invitations, dependent: :destroy
   has_many :lessons, dependent: :destroy
+  accepts_nested_attributes_for :lessons, allow_destroy: true
+
   enum :status, %i[pending open closed], _default: :pending
 
   scope :with_includes, -> { includes([{ host: :profile }, { instructors: :profile }]) }
@@ -40,8 +43,9 @@ class Course < ApplicationRecord
   def as_json_with_details(options = {})
     authorized = options[:authorized]
     as_json({
-      include: [{ host: { methods: :name } }, { instructors: { methods: :name } }, :lessons]
+      include: [{ host: { methods: :name } }, { instructors: { methods: :name } }]
     }.merge(options))
+      .merge({ lessons: lessons_as_json })
       .merge(authorized ? instruction_invitations_as_json : {})
       .merge(options.key?(:authorized) ? { authorized: } : {})
       .merge(options.key?(:hosted) ? { hosted: options[:hosted] } : {})
@@ -57,6 +61,10 @@ class Course < ApplicationRecord
 
   def single_instructor?
     instructors.size == 1
+  end
+
+  def lessons_as_json
+    lessons.order(order: :asc).as_json
   end
 
   def simplified_errors
@@ -96,6 +104,13 @@ class Course < ApplicationRecord
 
   def valid_instructor_logins
     errors.add(:instructor_logins, 'are invalid') unless instructor_logins_by_validity[:invalid].empty?
+  end
+
+  def logical_lessons_order
+    remaining_lessons = lessons.reject(&:marked_for_destruction?)
+    return if remaining_lessons.sort_by(&:order).map(&:order) == (1..remaining_lessons.size).to_a
+
+    errors.add(:lessons, 'do not follow logical numbering order')
   end
 
   def open_with_lessons

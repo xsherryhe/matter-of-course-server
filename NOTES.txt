@@ -1,6 +1,4 @@
 //TO DO: lesson sections and lesson routes 
---UI to order and re-order lessons within course
-  --use higher level component withOrderAndDestroy
 --back button from lesson / lesson form to course
 --remove lesson
 
