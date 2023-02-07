@@ -23,9 +23,8 @@ class Lesson < ApplicationRecord
     lesson_sections.order(order: :asc).as_json
   end
 
-  # TO DO: add students/enrollment
-  def authorized_for?(user)
-    authorized_to_edit?(user)
+  def authorized_to_view?(user)
+    authorized_to_edit?(user) || course.enrolled?(user)
   end
 
   def authorized_to_edit?(user)

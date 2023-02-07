@@ -51,9 +51,14 @@ class Course < ApplicationRecord
       .merge(authorized ? instruction_invitations_as_json : {})
       .merge(options.key?(:authorized) ? { authorized: } : {})
       .merge(options.key?(:hosted) ? { hosted: options[:hosted] } : {})
+      .merge(options.key?(:enrolled) ? { enrolled: options[:enrolled] } : {})
   end
 
-  def authorized_for?(user)
+  def enrolled?(user)
+    user && students.exists?(user.id)
+  end
+
+  def authorized_to_view?(user)
     open? || authorized_to_edit?(user)
   end
 

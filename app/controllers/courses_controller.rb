@@ -9,12 +9,13 @@ class CoursesController < ApplicationController
   def show
     @course = Course.find(params[:id])
 
-    unless @course.authorized_for?(current_user)
+    unless @course.authorized_to_view?(current_user)
       return respond_with @course, only: :status, include: [host: { methods: :name }], status: :unauthorized
     end
 
     render json: @course.as_json_with_details(hosted: current_user == @course.host,
-                                              authorized: current_user&.authorized_to_edit?(@course))
+                                              authorized: current_user&.authorized_to_edit?(@course),
+                                              enrolled: current_user&.enrolled?(@course))
   end
 
   def create

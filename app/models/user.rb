@@ -48,13 +48,17 @@ class User < ApplicationRecord
   end
 
   def all_courses(user)
-    { hosted: hosted_courses, instructed: instructed_courses }.transform_values do |courses|
+    { hosted: hosted_courses, instructed: instructed_courses, enrolled: enrolled_courses }.transform_values do |courses|
       courses.authorized_for(user)
     end
   end
 
-  def authorized_for?(course)
-    course.open? || authorized_to_edit?(course)
+  def enrolled?(course)
+    course.enrolled?(self)
+  end
+
+  def authorized_to_view?(resource)
+    resource.authorized_to_view?(self)
   end
 
   def authorized_to_edit?(resource)
