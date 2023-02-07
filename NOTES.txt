@@ -1,6 +1,4 @@
-//TO DO: lesson sections and lesson routes 
---back button from lesson / lesson form to course
---remove lesson
+
 
 MATTER OF COURSE
 User (for logged in users)

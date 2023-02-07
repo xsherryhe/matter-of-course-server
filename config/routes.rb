@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     resources :lessons, only: %i[create update]
   end
   resources :instruction_invitations, only: %i[index update destroy]
-  resources :lessons, only: %i[show]
+  resources :lessons, only: %i[show destroy]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

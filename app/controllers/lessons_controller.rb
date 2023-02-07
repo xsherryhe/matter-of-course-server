@@ -34,6 +34,14 @@ class LessonsController < ApplicationController
     end
   end
 
+  def destroy
+    @lesson = Lesson.find(params[:id])
+    return head :unauthorized unless current_user.authorized_to_edit?(@lesson)
+
+    @lesson.destroy
+    head :ok
+  end
+
   private
 
   def lesson_params
