@@ -1,4 +1,4 @@
-
+// TO DO: Enrollments / students
 
 MATTER OF COURSE
 User (for logged in users)
@@ -11,8 +11,8 @@ User (for logged in users)
 //-has and belongs to many instructed courses class name Course
 //-has many sent instruction invitations
 //-has many received instruction invitations
--has many enrollments
--has many enrolled courses through enrollments class name Course
+//-has many enrollments, foreign key student_id
+//-has many enrolled courses through enrollments source course
 -has many assignment submissions (assigned when the student starts the lesson)
 
 Profile
@@ -30,8 +30,8 @@ Course
 //-belongs to creator class name User
 //-has and belongs to many instructors class name User (auto add creator as instructor)
 //-has many instruction invitations
--has many enrollments
--has many students through enrollments class name User
+//-has many enrollments
+//-has many students through enrollments class name User
 //-has many lessons
 -has many posts as postable
 
@@ -43,12 +43,12 @@ Course
 //-once accepted, recipient is instructor of course
 
 Enrollment
--belongs to enrolled course class name Course
--belongs to student class name User
+//-belongs to course
+//-belongs to student class name User
 
 Lesson
--title
--order
+//-title
+//-order
 //-belongs to course 
 //-has many lesson_sections
 -has many assignments
@@ -62,7 +62,7 @@ LessonSection
 -has many media (active storage/cloudinary)
 
 Media
--belongs to lesson
+-belongs to lesson_section
 
 Assignment
 -body/instructions
@@ -96,7 +96,6 @@ Comment
 -has many comments as reactable
 -body
 
-// TO DO: UI to change status of course (e.g from pending to open, open to closed)
 // TO DO: Error catching from fetcher
 // TO DO: Set default_url_options in production
 // TO DO: Other devise routes (e.g. edit account, forgot password)

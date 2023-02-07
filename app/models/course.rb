@@ -15,6 +15,8 @@ class Course < ApplicationRecord
                           association_foreign_key: 'instructor_id'
   has_many :instruction_invitations, dependent: :destroy
   has_many :lessons, dependent: :destroy
+  has_many :enrollments, dependent: :destroy
+  has_many :students, through: :enrollments
   accepts_nested_attributes_for :lessons, allow_destroy: true
 
   enum :status, %i[pending open closed], _default: :pending

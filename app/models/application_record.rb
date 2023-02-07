@@ -3,7 +3,8 @@ class ApplicationRecord < ActiveRecord::Base
 
   def simplified_errors(options = {})
     simple_errors = errors.each_with_object({}) do |error, hash|
-      (hash[error.attribute] ||= []) << error.message
+      attribute = error.attribute[0..(/_id$/ =~ error.attribute ? -4 : -1)]
+      (hash[attribute] ||= []) << error.message
     end
 
     add_association_errors(simple_errors, options[:include])

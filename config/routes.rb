@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
-  get 'lessons/create'
   devise_for :users, controllers: { registrations: 'registrations', sessions: 'sessions' }
   get '/current_user', to: 'users#show'
   resources :courses, only: %i[index show create update destroy] do
     resources :instructors, only: %i[destroy]
     resources :lessons, only: %i[create update]
+    resources :enrollments, only: %i[create]
   end
   resources :instruction_invitations, only: %i[index update destroy]
   resources :lessons, only: %i[show destroy]

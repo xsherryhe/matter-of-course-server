@@ -18,6 +18,8 @@ class User < ApplicationRecord
                           association_foreign_key: 'instructed_course_id'
   has_many :sent_instruction_invitations, class_name: 'InstructionInvitation', foreign_key: 'sender_id'
   has_many :received_instruction_invitations, class_name: 'InstructionInvitation', foreign_key: 'recipient_id'
+  has_many :enrollments, foreign_key: 'student_id'
+  has_many :enrolled_courses, through: :enrollments, source: :course
   accepts_nested_attributes_for :profile
   attr_writer :login
 

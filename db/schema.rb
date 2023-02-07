@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_06_205947) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_07_222111) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,6 +22,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_06_205947) do
     t.text "description"
     t.bigint "host_id", null: false
     t.index ["host_id"], name: "index_courses_on_host_id"
+  end
+
+  create_table "enrollments", force: :cascade do |t|
+    t.bigint "course_id", null: false
+    t.bigint "student_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id", "student_id"], name: "index_enrollments_on_course_id_and_student_id", unique: true
+    t.index ["course_id"], name: "index_enrollments_on_course_id"
+    t.index ["student_id"], name: "index_enrollments_on_student_id"
   end
 
   create_table "instructed_courses_instructors", id: false, force: :cascade do |t|
@@ -88,6 +98,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_06_205947) do
   end
 
   add_foreign_key "courses", "users", column: "host_id"
+  add_foreign_key "enrollments", "courses"
+  add_foreign_key "enrollments", "users", column: "student_id"
   add_foreign_key "instruction_invitations", "courses"
   add_foreign_key "instruction_invitations", "users", column: "recipient_id"
   add_foreign_key "instruction_invitations", "users", column: "sender_id"

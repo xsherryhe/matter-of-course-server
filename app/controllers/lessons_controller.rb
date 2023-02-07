@@ -17,7 +17,7 @@ class LessonsController < ApplicationController
     @lesson = Lesson.find(params[:id])
 
     unless @lesson.authorized_for?(current_user)
-      render json: { error: 'You are unauthorized to view this lesson.' }, status: :unauthorized
+      return render json: { error: 'You are unauthorized to view this lesson.' }, status: :unauthorized
     end
 
     render json: @lesson.as_json_with_details(authorized: current_user.authorized_to_edit?(@lesson))
