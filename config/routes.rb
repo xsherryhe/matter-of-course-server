@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :courses, only: %i[index show create update destroy] do
     resources :instructors, only: %i[destroy]
     resources :lessons, only: %i[create update]
-    resources :enrollments, only: %i[create]
+    resources :enrollments, only: %i[index create destroy]
   end
   resources :instruction_invitations, only: %i[index update destroy]
   resources :lessons, only: %i[show destroy]

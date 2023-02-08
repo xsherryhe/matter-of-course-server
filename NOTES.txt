@@ -1,7 +1,3 @@
-// TO DO: Enrollments / students
--View students enrolled in course
--Un-enroll option
-
 MATTER OF COURSE
 User (for logged in users)
 //-devise

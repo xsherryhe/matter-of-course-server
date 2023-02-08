@@ -5,6 +5,13 @@ class EnrollmentsController < ApplicationController
     render json: @enrollment.simplified_errors, status: :unprocessable_entity
   end
 
+  def index
+    @course = Course.find(params[:course_id])
+    return head :unauthorized unless current_user.authorized_to_edit?(@course)
+
+    respond_with @course.enrollments.roster
+  end
+
   def create
     @course = Course.find(params[:course_id])
     @enrollment = @course.enrollments.build(student: current_user)
@@ -14,5 +21,15 @@ class EnrollmentsController < ApplicationController
     else
       render json: @enrollment.simplified_errors, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    return head :unauthorized unless current_user.id == params[:id].to_i
+
+    @course = Course.find(params[:course_id])
+    @enrollment = @course.enrollments.find_by(student_id: params[:id])
+
+    @enrollment.destroy
+    head :ok
   end
 end
