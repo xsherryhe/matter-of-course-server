@@ -1,3 +1,5 @@
+// TO DO: Assignment submissions
+
 MATTER OF COURSE
 User (for logged in users)
 //-devise
@@ -63,8 +65,10 @@ Media
 -belongs to lesson_section
 
 Assignment
--body/instructions
--belongs to lesson
+//-title
+//-body/instructions
+//-order
+//-belongs to lesson
 -has many assignment submissions
 
 AssignmentSubmission
@@ -73,6 +77,7 @@ AssignmentSubmission
 -belongs to student
 -body
 -has many files (active storage/cloudinary)
+-has many comments as reactable
 
 Message
 -has and belongs to many replies, class name Message
@@ -81,7 +86,6 @@ Message
 -recipient class name User
 -body
 -send email with message body as parameter through Action Mailer
--websocket for message notifications
 
 Post
 -belongs to postable
@@ -103,3 +107,4 @@ Comment
 // TO DO: Password validation
 // TO DO: Subject/category tags for courses
 // TO DO: Page scrolling through items with 50 or more
+// TO DO: Websocket notifications

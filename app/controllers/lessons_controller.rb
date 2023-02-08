@@ -46,6 +46,8 @@ class LessonsController < ApplicationController
 
   def lesson_params
     params.require(:lesson)
-          .permit(:title, :order, lesson_sections_attributes: %i[id temp_id title body order _destroy])
+          .permit(:title, :order,
+                  lesson_sections_attributes: %i[id temp_id title body order _destroy],
+                  assignments_attributes: %i[id temp_id title body order _destroy])
   end
 end

@@ -4,14 +4,18 @@ class Lesson < ApplicationRecord
   validates :lesson_sections, presence: true
   validate :unique_order_in_course
   validate :logical_lesson_sections_order
+  validate :logical_assignments_order
   belongs_to :course
   has_many :lesson_sections, dependent: :destroy
+  has_many :assignments, dependent: :destroy
   accepts_nested_attributes_for :lesson_sections, allow_destroy: true
+  accepts_nested_attributes_for :assignments, allow_destroy: true
 
   def as_json_with_details(options = {})
     authorized = options[:authorized]
     as_json(options)
       .merge({ lesson_sections: lesson_sections_as_json })
+      .merge({ assignments: assignments_as_json })
       .merge(options.key?(:authorized) ? { authorized: } : {})
   end
 
@@ -21,6 +25,10 @@ class Lesson < ApplicationRecord
 
   def lesson_sections_as_json
     lesson_sections.order(order: :asc).as_json
+  end
+
+  def assignments_as_json
+    assignments.order(order: :asc).as_json
   end
 
   def authorized_to_view?(user)
@@ -46,5 +54,12 @@ class Lesson < ApplicationRecord
     return if remaining_lesson_sections.sort_by(&:order).map(&:order) == (1..remaining_lesson_sections.size).to_a
 
     errors.add(:lesson_sections, 'do not follow logical numbering order')
+  end
+
+  def logical_assignments_order
+    remaining_assignments = assignments.reject(&:marked_for_destruction?)
+    return if remaining_assignments.sort_by(&:order).map(&:order) == (1..remaining_assignments.size).to_a
+
+    errors.add(:assignments, 'do not follow logical numbering order')
   end
 end
