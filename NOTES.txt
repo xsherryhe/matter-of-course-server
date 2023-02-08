@@ -1,4 +1,9 @@
 // TO DO: Assignment submissions
+--Buttons: 
+  -Add to My Assignments
+  -Start Assignment (assignment submission resource create form)
+      --Save Draft
+      --Submit
 
 MATTER OF COURSE
 User (for logged in users)
@@ -13,7 +18,10 @@ User (for logged in users)
 //-has many received instruction invitations
 //-has many enrollments, foreign key student_id
 //-has many enrolled courses through enrollments source course
--has many assignment submissions (assigned when the student starts the lesson)
+-has many assignment submissions
+  -foreign key student_id
+  -created when student either adds to 'my assignments', saves and doesn't submit, or submits assignment
+  -"student" can be instructor or host as well
 
 Profile
 -avatar
@@ -72,10 +80,11 @@ Assignment
 -has many assignment submissions
 
 AssignmentSubmission
--enum incomplete complete
--belongs to assignment
--belongs to student
--body
+//-enum incomplete complete
+//-belongs to assignment
+  -optional so that submissions still exist for the student even if the course/assignment is deleted
+//-belongs to student, class name User
+//-body
 -has many files (active storage/cloudinary)
 -has many comments as reactable
 
@@ -98,6 +107,7 @@ Comment
 -has many comments as reactable
 -body
 
+// TO DO: Prev lesson / next lesson buttons on lesson pages
 // TO DO: Error catching from fetcher
 // TO DO: Set default_url_options in production
 // TO DO: Other devise routes (e.g. edit account, forgot password)

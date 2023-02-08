@@ -4,6 +4,7 @@ class Assignment < ApplicationRecord
   validates :order, presence: true
   validate :unique_order_in_lesson
   belongs_to :lesson
+  has_many :assignment_submissions, dependent: :nullify
 
   attr_accessor :temp_id
 

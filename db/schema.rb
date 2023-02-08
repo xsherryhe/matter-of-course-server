@@ -10,9 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_08_195833) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_08_204229) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "assignment_submissions", force: :cascade do |t|
+    t.integer "completion_status", default: 0
+    t.bigint "assignment_id"
+    t.bigint "student_id", null: false
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assignment_id"], name: "index_assignment_submissions_on_assignment_id"
+    t.index ["student_id"], name: "index_assignment_submissions_on_student_id"
+  end
 
   create_table "assignments", force: :cascade do |t|
     t.string "title"
@@ -107,6 +118,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_08_195833) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "assignment_submissions", "assignments"
+  add_foreign_key "assignment_submissions", "users", column: "student_id"
   add_foreign_key "assignments", "lessons"
   add_foreign_key "courses", "users", column: "host_id"
   add_foreign_key "enrollments", "courses"

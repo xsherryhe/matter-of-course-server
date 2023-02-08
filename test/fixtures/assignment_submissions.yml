@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  completion_status: 1
+  assignment: one
+  student: one
+  body: MyText
+
+two:
+  completion_status: 1
+  assignment: two
+  student: two
+  body: MyText

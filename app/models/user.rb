@@ -20,6 +20,7 @@ class User < ApplicationRecord
   has_many :received_instruction_invitations, class_name: 'InstructionInvitation', foreign_key: 'recipient_id'
   has_many :enrollments, foreign_key: 'student_id'
   has_many :enrolled_courses, through: :enrollments, source: :course
+  has_many :assignment_submissions, dependent: :destroy, foreign_key: 'student_id'
   accepts_nested_attributes_for :profile
   attr_writer :login
 
