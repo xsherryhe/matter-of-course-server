@@ -27,7 +27,7 @@ class EnrollmentsController < ApplicationController
     return head :unauthorized unless current_user.id == params[:id].to_i
 
     @course = Course.find(params[:course_id])
-    @enrollment = @course.enrollments.find_by(student_id: params[:id])
+    @enrollment = @course.enrollments.find_by!(student_id: params[:id])
 
     @enrollment.destroy
     head :ok
