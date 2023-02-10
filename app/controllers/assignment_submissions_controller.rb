@@ -5,6 +5,14 @@ class AssignmentSubmissionsController < ApplicationController
     render json: @submission.simplified_errors, status: :unprocessable_entity
   end
 
+  def index
+    @assignment = Assignment.find(params[:assignment_id])
+    return head :unauthorized unless current_user.authorized_to_edit?(@assignment.lesson)
+
+    @submissions = @assignment.assignment_submissions.complete.on_page(params[:page] || 1)
+    respond_with @submissions, include: { student: { methods: :name } }
+  end
+
   def show
     @submission = submission_from_params
     return render json: false unless @submission

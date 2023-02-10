@@ -23,14 +23,6 @@ class Lesson < ApplicationRecord
     super({ include: %i[lesson_sections] }.merge(options))
   end
 
-  def lesson_sections_as_json
-    lesson_sections.order(order: :asc).as_json
-  end
-
-  def assignments_as_json
-    assignments.order(order: :asc).as_json
-  end
-
   def authorized_to_view?(user)
     authorized_to_edit?(user) || course.enrolled?(user)
   end
@@ -40,6 +32,14 @@ class Lesson < ApplicationRecord
   end
 
   private
+
+  def lesson_sections_as_json
+    lesson_sections.order(order: :asc).as_json
+  end
+
+  def assignments_as_json
+    assignments.order(order: :asc).as_json
+  end
 
   def unique_order_in_course
     return if course.lessons

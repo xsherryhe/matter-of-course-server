@@ -54,6 +54,12 @@ class User < ApplicationRecord
     end
   end
 
+  def all_assignment_submissions(user)
+    return {} unless user == self
+
+    assignment_submissions.includes(:assignment).group_by(&:completion_status)
+  end
+
   def enrolled?(course)
     course.enrolled?(self)
   end
@@ -68,7 +74,7 @@ class User < ApplicationRecord
 
   def as_json(options = {})
     json = super({ methods: :name }.merge(options))
-    %i[all_courses].each { |key| json[key] = options[key] if options.key?(key) }
+    %i[all_courses all_assignment_submissions].each { |key| json[key] = options[key] if options.key?(key) }
     json
   end
 end

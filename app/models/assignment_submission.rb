@@ -6,6 +6,19 @@ class AssignmentSubmission < ApplicationRecord
 
   enum :completion_status, %i[incomplete complete], _default: :incomplete
 
+  scope :with_includes, -> { includes(:assignment, { student: :profile }) }
+  scope :on_page, lambda { |page = 1|
+    with_includes.order('profiles.first_name asc', 'profiles.last_name asc').limit(50).offset(50 * (page - 1))
+  }
+
+  def title
+    assignment&.title
+  end
+
+  def as_json(options = {})
+    super({ methods: :title }.merge(options))
+  end
+
   def as_json_with_details(options = {})
     as_json({ include: [:assignment, { student: { methods: :name } }] }.merge(options))
       .merge(options.key?(:authorized) ? { authorized: options[:authorized] } : {})

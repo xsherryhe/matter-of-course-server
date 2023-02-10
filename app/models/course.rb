@@ -15,6 +15,7 @@ class Course < ApplicationRecord
                           association_foreign_key: 'instructor_id'
   has_many :instruction_invitations, dependent: :destroy
   has_many :lessons, dependent: :destroy
+  has_many :assignments, through: :lessons
   has_many :enrollments, dependent: :destroy
   has_many :students, through: :enrollments
   accepts_nested_attributes_for :lessons, allow_destroy: true
@@ -48,6 +49,7 @@ class Course < ApplicationRecord
       include: [{ host: { methods: :name } }, { instructors: { methods: :name } }]
     }.merge(options))
       .merge({ lessons: lessons_as_json })
+      .merge({ assignments: assignments_as_json })
       .merge(authorized ? instruction_invitations_as_json : {})
       .merge(options.key?(:authorized) ? { authorized: } : {})
       .merge(options.key?(:hosted) ? { hosted: options[:hosted] } : {})
@@ -70,15 +72,19 @@ class Course < ApplicationRecord
     instructors.size == 1
   end
 
-  def lessons_as_json
-    lessons.order(order: :asc).as_json
-  end
-
   def simplified_errors
     super.merge(instructor_logins: instructor_logins_by_validity)
   end
 
   private
+
+  def lessons_as_json
+    lessons.order(order: :asc).as_json
+  end
+
+  def assignments_as_json
+    assignments.joins(:lesson).order('lessons.order asc', order: :asc).as_json
+  end
 
   def instruction_invitations_as_json
     { instruction_invitations: instruction_invitations.pending.as_json(include: :recipient) }
