@@ -1,10 +1,7 @@
 // TO DO: Assignment submissions
---Buttons: 
-  -Add to My Assignments -> assignment_submissions#create
-  -Start Assignment (assignment submission resource create form)
-      --Save Draft
-      --Submit
 --my assignments page
+--view completed assignment submissions for hosts and instructors
+    --from the assignment and from the roster
 --delete assignment submission (incomplete or complete)
 
 MATTER OF COURSE

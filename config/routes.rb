@@ -8,10 +8,11 @@ Rails.application.routes.draw do
   end
   resources :instruction_invitations, only: %i[index update destroy]
   resources :lessons, only: %i[show destroy]
-  resources :assignments, only: [] do
-    resources :assignment_submissions, only: %i[create], path: 'submissions'
+  resources :assignments, only: %i[show] do
+    resources :assignment_submissions, only: %i[create update], path: 'submissions'
   end
-  get '/assignments/:assignment_id/my-submission', to: 'assignment_submissions#show'
+  resources :assignment_submissions, only: %i[show]
+  get '/assignments/:assignment_id/current_submission', to: 'assignment_submissions#show'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

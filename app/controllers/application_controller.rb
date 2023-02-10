@@ -3,8 +3,8 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   after_action :send_csrf_token
 
-  rescue_from ActiveRecord::RecordNotFound do
-    render json: { error: "This #{controller_name.singularize.humanize.downcase} no longer exists." },
+  rescue_from ActiveRecord::RecordNotFound do |exception|
+    render json: { error: "This #{exception.model.constantize.model_name.human.downcase} no longer exists." },
            status: :unprocessable_entity
   end
 
