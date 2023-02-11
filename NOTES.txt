@@ -1,3 +1,5 @@
+// TO DO: Messages
+
 MATTER OF COURSE
 User (for logged in users)
 //-devise
@@ -12,6 +14,8 @@ User (for logged in users)
 //-has many enrollments, foreign key student_id
 //-has many enrolled courses through enrollments source course
 //-has many assignment submissions, foreign key student_id
+-has many sent messages
+-has many received messages
 
 Profile
 -avatar
@@ -79,17 +83,21 @@ AssignmentSubmission
 -has many comments as reactable
 
 Message
--has and belongs to many replies, class name Message
--enum unread read
--sender class name User
--recipient class name User
--body
+//-belongs to sender class name User
+//-belongs to recipient class name User
+//-belongs to parent, class name Message, optional true
+//-has many replies, class name Message
+-head scope: where parent null
+-enum read_status, unread read
+//-body
+-create a message when an instruction invitation is sent
 -send email with message body as parameter through Action Mailer
 
 Post
 -belongs to postable
 -belongs to creator class name User
 -has many comments as reactable
+-link from postables as a "View Discussion" link
 
 Comment
 -belongs to reactable
@@ -109,6 +117,7 @@ Comment
 // TO DO: Error catching from fetcher
 // TO DO: Set default_url_options in production
 // TO DO: Other devise routes (e.g. edit account, forgot password)
+  //user profile pages
   //for destroy user, make them change the host of the courses and show error if hosts are not changed (destroy returns false)
 // TO DO: Delete unused devise views and routes
 // TO DO: Fade in animation of homepage

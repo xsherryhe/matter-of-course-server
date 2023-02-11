@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_09_164145) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_11_231446) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -95,6 +95,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_09_164145) do
     t.index ["course_id"], name: "index_lessons_on_course_id"
   end
 
+  create_table "messages", force: :cascade do |t|
+    t.bigint "sender_id", null: false
+    t.bigint "recipient_id", null: false
+    t.integer "read_status", default: 0
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "parent_id"
+    t.index ["parent_id"], name: "index_messages_on_parent_id"
+    t.index ["recipient_id"], name: "index_messages_on_recipient_id"
+    t.index ["sender_id"], name: "index_messages_on_sender_id"
+  end
+
   create_table "profiles", force: :cascade do |t|
     t.string "first_name"
     t.string "middle_name"
@@ -130,5 +143,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_09_164145) do
   add_foreign_key "instruction_invitations", "users", column: "sender_id"
   add_foreign_key "lesson_sections", "lessons"
   add_foreign_key "lessons", "courses"
+  add_foreign_key "messages", "messages", column: "parent_id"
+  add_foreign_key "messages", "users", column: "recipient_id"
+  add_foreign_key "messages", "users", column: "sender_id"
   add_foreign_key "profiles", "users"
 end
