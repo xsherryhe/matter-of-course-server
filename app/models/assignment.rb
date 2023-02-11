@@ -12,6 +12,10 @@ class Assignment < ApplicationRecord
     super || temp_id
   end
 
+  def authorized_to_edit?(user)
+    lesson.authorized_to_edit?(user)
+  end
+
   private
 
   def unique_order_in_lesson

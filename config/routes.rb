@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resources :instructors, only: %i[destroy]
     resources :lessons, only: %i[create update]
     resources :enrollments, only: %i[index create destroy]
+    resources :assignment_submissions, only: %i[index]
   end
   resources :instruction_invitations, only: %i[index update destroy]
   resources :lessons, only: %i[show destroy]

@@ -16,6 +16,7 @@ class Course < ApplicationRecord
   has_many :instruction_invitations, dependent: :destroy
   has_many :lessons, dependent: :destroy
   has_many :assignments, through: :lessons
+  has_many :assignment_submissions, through: :assignments
   has_many :enrollments, dependent: :destroy
   has_many :students, through: :enrollments
   accepts_nested_attributes_for :lessons, allow_destroy: true

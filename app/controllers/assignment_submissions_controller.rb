@@ -6,11 +6,11 @@ class AssignmentSubmissionsController < ApplicationController
   end
 
   def index
-    @assignment = Assignment.find(params[:assignment_id])
-    return head :unauthorized unless current_user.authorized_to_edit?(@assignment.lesson)
+    @parent = indexing_parent
+    return head :unauthorized unless current_user.authorized_to_edit?(@parent)
 
-    @submissions = @assignment.assignment_submissions.complete.on_page(params[:page] || 1)
-    respond_with @submissions, include: { student: { methods: :name } }
+    @submissions = @parent.assignment_submissions.complete.by_student(params[:student_id]).on_page(params[:page] || 1)
+    respond_with @submissions
   end
 
   def show
@@ -45,6 +45,12 @@ class AssignmentSubmissionsController < ApplicationController
   end
 
   private
+
+  def indexing_parent
+    parent_param = %i[course_id assignment_id].find { |param| params.key?(param) }
+    parent_model = { course_id: Course, assignment_id: Assignment }[parent_param]
+    parent_model.find(params[parent_param])
+  end
 
   def assignment_submission_params
     params.require(:assignment_submission).permit(:completion_status, :body)

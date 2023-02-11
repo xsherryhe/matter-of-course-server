@@ -10,18 +10,20 @@ class AssignmentSubmission < ApplicationRecord
   scope :on_page, lambda { |page = 1|
     with_includes.order('profiles.first_name asc', 'profiles.last_name asc').limit(50).offset(50 * (page - 1))
   }
+  scope :by_student, lambda { |student_id|
+    student_id ? with_includes.where(student_id:) : with_includes
+  }
 
   def title
     assignment&.title
   end
 
   def as_json(options = {})
-    super({ methods: :title }.merge(options))
+    super({ include: [:assignment, { student: { methods: :name } }], methods: :title }.merge(options))
   end
 
   def as_json_with_details(options = {})
-    as_json({ include: [:assignment, { student: { methods: :name } }] }.merge(options))
-      .merge(options.key?(:authorized) ? { authorized: options[:authorized] } : {})
+    as_json(options).merge(options.key?(:authorized) ? { authorized: options[:authorized] } : {})
   end
 
   def authorized_to_view?(user)

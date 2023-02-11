@@ -1,10 +1,4 @@
 // TO DO: Assignment submissions
---My Students' Assignments page -- browse course dropdown menu in My Assignments, 
-  --which brings up CourseAssignments without heading
-  --with first courses preloaded
---view completed assignment submissions for hosts and instructors
-    --button to view submissions from the assignment on the lesson
-    --from the roster
 --delete assignment submission (incomplete or complete)
 
 MATTER OF COURSE
@@ -109,6 +103,7 @@ Comment
 -has many comments as reactable
 -body
 
+// TO DO: Tab mechanism for course pages (e.g., assignments tab)
 // TO DO: Page mechanism for user pages (e.g. user courses and user assignments) and subsections (e.g. assignments section of courses)
 // TO DO: Add "date completed" to completed assignment submissions
 // TO DO: Redirect unauthorized/need to sign in pages back to home page (alter fetcher error)
