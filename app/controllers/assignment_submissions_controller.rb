@@ -6,7 +6,7 @@ class AssignmentSubmissionsController < ApplicationController
   end
 
   def index
-    @parent = indexing_parent
+    @parent = parent_from_params
     return head :unauthorized unless current_user.authorized_to_edit?(@parent)
 
     @submissions = @parent.assignment_submissions.complete.by_student(params[:student_id]).on_page(params[:page] || 1)
@@ -44,16 +44,24 @@ class AssignmentSubmissionsController < ApplicationController
     end
   end
 
-  private
+  def destroy
+    @submission = AssignmentSubmission.find(params[:id])
+    return head :unauthorized unless current_user.authorized_to_edit?(@submission)
 
-  def indexing_parent
-    parent_param = %i[course_id assignment_id].find { |param| params.key?(param) }
-    parent_model = { course_id: Course, assignment_id: Assignment }[parent_param]
-    parent_model.find(params[parent_param])
+    @submission.destroy
+    head :ok
   end
+
+  private
 
   def assignment_submission_params
     params.require(:assignment_submission).permit(:completion_status, :body)
+  end
+
+  def parent_from_params
+    parent_param = %i[course_id assignment_id].find { |param| params.key?(param) }
+    parent_model = { course_id: Course, assignment_id: Assignment }[parent_param]
+    parent_model.find(params[parent_param])
   end
 
   def submission_from_params

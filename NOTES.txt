@@ -1,5 +1,4 @@
-// TO DO: Assignment submissions
---delete assignment submission (incomplete or complete)
+// TO DO: Delete assignment button on assignment submissions pages
 
 MATTER OF COURSE
 User (for logged in users)
@@ -14,10 +13,7 @@ User (for logged in users)
 //-has many received instruction invitations
 //-has many enrollments, foreign key student_id
 //-has many enrolled courses through enrollments source course
--has many assignment submissions
-  -foreign key student_id
-  -created when student either adds to 'my assignments', saves and doesn't submit, or submits assignment
-  -"student" can be instructor or host as well
+//-has many assignment submissions, foreign key student_id
 
 Profile
 -avatar
@@ -55,7 +51,7 @@ Lesson
 //-order
 //-belongs to course 
 //-has many lesson_sections
--has many assignments
+//-has many assignments
 -has many posts as postable
 
 LessonSection
@@ -73,12 +69,12 @@ Assignment
 //-body/instructions
 //-order
 //-belongs to lesson
--has many assignment submissions
+//-has many assignment submissions
 
 AssignmentSubmission
 //-enum incomplete complete
 //-belongs to assignment
-  -optional so that submissions still exist for the student even if the course/assignment is deleted
+//-optional so that submissions still exist for the student even if the course/assignment is deleted
 //-belongs to student, class name User
 //-body
 -has many files (active storage/cloudinary)
@@ -103,6 +99,9 @@ Comment
 -has many comments as reactable
 -body
 
+// TO DO: Redirect to a different page after resource deletions where possible
+// TO DO: Show my courses on homepage if logged in, 
+  // and redesign courses to show user role on course card instead of having sections
 // TO DO: Tab mechanism for course pages (e.g., assignments tab)
 // TO DO: Page mechanism for user pages (e.g. user courses and user assignments) and subsections (e.g. assignments section of courses)
 // TO DO: Add "date completed" to completed assignment submissions

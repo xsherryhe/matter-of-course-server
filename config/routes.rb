@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   resources :assignments, only: %i[show] do
     resources :assignment_submissions, only: %i[index create update], path: 'submissions'
   end
-  resources :assignment_submissions, only: %i[show]
+  resources :assignment_submissions, only: %i[show destroy]
   get '/assignments/:assignment_id/current_submission', to: 'assignment_submissions#show'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

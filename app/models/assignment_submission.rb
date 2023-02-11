@@ -30,7 +30,7 @@ class AssignmentSubmission < ApplicationRecord
   end
 
   def authorized_to_view?(user)
-    user && (student == user || (complete? && assignment.lesson.authorized_to_edit?(user)))
+    user && (student == user || (complete? && assignment.authorized_to_edit?(user)))
   end
 
   def authorized_to_edit?(user)

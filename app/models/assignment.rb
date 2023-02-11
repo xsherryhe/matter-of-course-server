@@ -16,6 +16,10 @@ class Assignment < ApplicationRecord
     lesson.authorized_to_edit?(user)
   end
 
+  def authorized_to_view?(user)
+    lesson.authorized_to_view?(user)
+  end
+
   private
 
   def unique_order_in_lesson
