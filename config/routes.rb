@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   end
   resources :instruction_invitations, only: %i[index update destroy]
   resources :lessons, only: %i[show destroy]
-  resources :assignments, only: %i[show] do
+  resources :assignments, only: %i[show destroy] do
     resources :assignment_submissions, only: %i[index create update], path: 'submissions'
   end
   resources :assignment_submissions, only: %i[show destroy]

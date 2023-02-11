@@ -1,5 +1,3 @@
-// TO DO: Delete assignment button on assignment submissions pages
-
 MATTER OF COURSE
 User (for logged in users)
 //-devise
