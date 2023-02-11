@@ -8,7 +8,10 @@ class AssignmentSubmission < ApplicationRecord
 
   scope :with_includes, -> { includes(:assignment, { student: :profile }) }
   scope :on_page, lambda { |page = 1|
-    with_includes.order('profiles.first_name asc', 'profiles.last_name asc').limit(50).offset(50 * (page - 1))
+    with_includes.joins(assignment: [:lesson])
+                 .order('profiles.first_name asc', 'profiles.last_name asc',
+                        'lessons.order asc', 'assignments.order asc')
+                 .limit(50).offset(50 * (page - 1))
   }
   scope :by_student, lambda { |student_id|
     student_id ? with_includes.where(student_id:) : with_includes
