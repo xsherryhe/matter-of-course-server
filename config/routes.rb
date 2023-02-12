@@ -8,6 +8,8 @@ Rails.application.routes.draw do
     resources :assignment_submissions, only: %i[index]
   end
   resources :instruction_invitations, only: %i[index update destroy]
+  resources :messages, only: %i[create]
+  get '/current_messages/:type', to: 'messages#index'
   resources :lessons, only: %i[show destroy]
   resources :assignments, only: %i[show destroy] do
     resources :assignment_submissions, only: %i[index create update], path: 'submissions'

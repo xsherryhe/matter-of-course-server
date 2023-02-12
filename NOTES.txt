@@ -1,4 +1,7 @@
 // TO DO: Messages
+  //Message link in roster
+  //Message link to host with error on course
+  //Message host or instructor link for enrolled students on course
 
 MATTER OF COURSE
 User (for logged in users)
@@ -88,7 +91,8 @@ Message
 //-belongs to parent, class name Message, optional true
 //-has many replies, class name Message
 -head scope: where parent null
--enum read_status, unread read
+//-enum read_status, unread read
+//-subject
 //-body
 -create a message when an instruction invitation is sent
 -send email with message body as parameter through Action Mailer
