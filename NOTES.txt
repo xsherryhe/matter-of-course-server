@@ -1,9 +1,3 @@
-// TO DO: Messages
-  --View individual message page
-  //Message link in roster
-  //Message link to host with error on course
-  //Message host or instructor link for enrolled students on course
-
 MATTER OF COURSE
 User (for logged in users)
 //-devise
@@ -18,8 +12,8 @@ User (for logged in users)
 //-has many enrollments, foreign key student_id
 //-has many enrolled courses through enrollments source course
 //-has many assignment submissions, foreign key student_id
--has many sent messages
--has many received messages
+//-has many sent messages
+//-has many received messages
 
 Profile
 -avatar
@@ -91,7 +85,6 @@ Message
 //-belongs to recipient class name User
 //-belongs to parent, class name Message, optional true
 //-has many replies, class name Message
--head scope: where parent null
 //-enum read_status, unread read
 //-subject
 //-body
@@ -110,6 +103,7 @@ Comment
 -has many comments as reactable
 -body
 
+// TO DO: Read / unread invitation status / display
 // TO DO: Redirect to a different page after resource deletions where possible
 // TO DO: Show my courses on homepage if logged in, 
   // and redesign courses to show user role on course card instead of having sections

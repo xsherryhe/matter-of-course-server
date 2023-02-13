@@ -63,11 +63,11 @@ class User < ApplicationRecord
   end
 
   def inbox_messages
-    received_messages.not_deleted.order_by_unread
+    received_messages.not_deleted
   end
 
   def outbox_messages
-    sent_messages.order_by_time
+    sent_messages.user_generated
   end
 
   def enrolled?(course)

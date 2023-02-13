@@ -49,6 +49,7 @@ class CoursesController < ApplicationController
   private
 
   def course_params
-    params.require(:course).permit(:title, :description, :status, :instructor_logins, lessons_attributes: %i[id order _destroy])
+    params.require(:course)
+          .permit(:title, :description, :status, :instructor_logins, lessons_attributes: %i[id order _destroy])
   end
 end

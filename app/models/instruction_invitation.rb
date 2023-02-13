@@ -1,7 +1,9 @@
 class InstructionInvitation < ApplicationRecord
+  after_create_commit :create_invitation_message
   belongs_to :course
   belongs_to :sender, class_name: 'User'
   belongs_to :recipient, class_name: 'User'
+  has_one :message, as: :messageable
 
   validate :recipient_not_yet_invited
   validate :recipient_not_yet_authorized
@@ -16,6 +18,15 @@ class InstructionInvitation < ApplicationRecord
   end
 
   private
+
+  def create_invitation_message
+    create_message(
+      sender:,
+      recipient:,
+      subject: "#{sender.username} has invited you to instruct a course!",
+      body: 'Respond to Invitation'
+    )
+  end
 
   def recipient_not_yet_invited
     return unless pending? && recipient.received_instruction_invitations.pending.exists?(course:)
