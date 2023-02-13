@@ -62,6 +62,14 @@ class User < ApplicationRecord
     assignment_submissions.includes(:assignment).group_by(&:completion_status)
   end
 
+  def inbox_messages
+    received_messages.not_deleted.order_by_unread
+  end
+
+  def outbox_messages
+    sent_messages.order_by_time
+  end
+
   def enrolled?(course)
     course.enrolled?(self)
   end

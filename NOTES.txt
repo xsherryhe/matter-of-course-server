@@ -1,4 +1,5 @@
 // TO DO: Messages
+  --View individual message page
   //Message link in roster
   //Message link to host with error on course
   //Message host or instructor link for enrolled students on course
