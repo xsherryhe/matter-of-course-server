@@ -57,6 +57,14 @@ class Course < ApplicationRecord
       .merge(options.key?(:enrolled) ? { enrolled: options[:enrolled] } : {})
   end
 
+  def hosted?(user)
+    host == user
+  end
+
+  def instructed?(user)
+    user && instructors.exists?(user.id)
+  end
+
   def enrolled?(user)
     user && students.exists?(user.id)
   end
@@ -66,7 +74,7 @@ class Course < ApplicationRecord
   end
 
   def authorized_to_edit?(user)
-    user && (host == user || instructors.exists?(user.id))
+    hosted?(user) || instructed?(user)
   end
 
   def single_instructor?

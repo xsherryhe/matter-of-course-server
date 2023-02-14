@@ -13,7 +13,7 @@ class CoursesController < ApplicationController
       return respond_with @course, only: :status, include: [host: { methods: :name }], status: :unauthorized
     end
 
-    render json: @course.as_json_with_details(hosted: current_user == @course.host,
+    render json: @course.as_json_with_details(hosted: current_user&.hosted?(@course),
                                               authorized: current_user&.authorized_to_edit?(@course),
                                               enrolled: current_user&.enrolled?(@course))
   end
