@@ -23,6 +23,7 @@ class User < ApplicationRecord
   has_many :enrollments, foreign_key: 'student_id'
   has_many :enrolled_courses, through: :enrollments, source: :course
   has_many :assignment_submissions, dependent: :destroy, foreign_key: 'student_id'
+  has_many :posts, foreign_key: 'creator_id'
   accepts_nested_attributes_for :profile
   attr_writer :login
 
@@ -68,6 +69,14 @@ class User < ApplicationRecord
 
   def outbox_messages
     sent_messages.user_generated
+  end
+
+  def hosted?(course)
+    course.hosted?(self)
+  end
+
+  def instructed?(course)
+    course.instructed?(self)
   end
 
   def enrolled?(course)

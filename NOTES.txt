@@ -1,3 +1,5 @@
+// TO DO: Comment
+
 MATTER OF COURSE
 User (for logged in users)
 //-devise
@@ -88,14 +90,17 @@ Message
 //-enum read_status, unread read
 //-subject
 //-body
--create a message when an instruction invitation is sent
+//-create a message when an instruction invitation is sent
 -send email with message body as parameter through Action Mailer
 
 Post
--belongs to postable
--belongs to creator class name User
+//-title
+//-body
+//-belongs to postable
+//-belongs to creator class name User
 -has many comments as reactable
--link from postables as a "View Discussion" link
+//-link from postables as a "View Discussion" link
+//-have display of post creator indicate their role (host, instructor, or student)
 
 Comment
 -belongs to reactable
@@ -103,6 +108,8 @@ Comment
 -has many comments as reactable
 -body
 
+// TO DO: Delete button on message index page
+// TO DO: Extract back links to a separate component
 // TO DO: Read / unread invitation status / display
 // TO DO: Redirect to a different page after resource deletions where possible
 // TO DO: Show my courses on homepage if logged in, 

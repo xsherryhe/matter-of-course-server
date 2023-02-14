@@ -19,6 +19,7 @@ class Course < ApplicationRecord
   has_many :assignment_submissions, through: :assignments
   has_many :enrollments, dependent: :destroy
   has_many :students, through: :enrollments
+  has_many :posts, as: :postable, dependent: :destroy
   accepts_nested_attributes_for :lessons, allow_destroy: true
 
   enum :status, %i[pending open closed], _default: :pending

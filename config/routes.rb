@@ -16,6 +16,9 @@ Rails.application.routes.draw do
   end
   resources :assignment_submissions, only: %i[show destroy]
   get '/assignments/:assignment_id/current_submission', to: 'assignment_submissions#show'
+  resources :posts, only: %i[show update destroy]
+  get '/:postable_type/:postable_id/posts', to: 'posts#index'
+  post '/:postable_type/:postable_id/posts', to: 'posts#create'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

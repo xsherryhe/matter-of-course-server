@@ -8,6 +8,7 @@ class Lesson < ApplicationRecord
   belongs_to :course
   has_many :lesson_sections, dependent: :destroy
   has_many :assignments, dependent: :destroy
+  has_many :posts, as: :postable, dependent: :destroy
   accepts_nested_attributes_for :lesson_sections, allow_destroy: true
   accepts_nested_attributes_for :assignments, allow_destroy: true
 
