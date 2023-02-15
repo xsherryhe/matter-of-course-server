@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     resources :assignment_submissions, only: %i[index]
   end
   resources :instruction_invitations, only: %i[index update destroy]
+  patch '/instruction_invitations', to: 'instruction_invitations#batch_update'
   resources :messages, only: %i[show create update]
   get '/current_messages/:type', to: 'messages#index'
   resources :lessons, only: %i[show update destroy]

@@ -105,9 +105,8 @@ Comment
 //-belongs to creator class name User
 //-body
 
-// TO DO: Delete button on message index page
-// TO DO: Extract back links to a separate component
 // TO DO: Read / unread invitation status / display
+// TO DO: Ensure all index pages have a 0 length message
 // TO DO: Redirect to a different page after resource deletions where possible
 // TO DO: Show my courses on homepage if logged in, 
   // and redesign courses to show user role on course card instead of having sections

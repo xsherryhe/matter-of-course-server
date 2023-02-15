@@ -6,6 +6,15 @@ class InstructionInvitationsController < ApplicationController
     respond_with @invitations, include: %i[course sender]
   end
 
+  def batch_update
+    @invitations = current_user.received_instruction_invitations
+                               .on_page(params[:page] || 1)
+                               .includes(:course, :sender)
+
+    @invitations.each { |invitation| invitation.pending! if invitation.unread? } if params[:read]
+    head :ok
+  end
+
   def update
     @invitation = InstructionInvitation.find(params[:id])
     return head :unauthorized unless current_user == @invitation.recipient

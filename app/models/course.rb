@@ -97,7 +97,7 @@ class Course < ApplicationRecord
   end
 
   def instruction_invitations_as_json
-    { instruction_invitations: instruction_invitations.pending.as_json(include: :recipient) }
+    { instruction_invitations: instruction_invitations.not_accepted.as_json(include: :recipient) }
   end
 
   def add_host_as_instructor
