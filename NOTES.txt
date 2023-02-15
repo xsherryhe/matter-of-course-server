@@ -1,4 +1,8 @@
 // TO DO: Comment
+//--Don't use asResource for Comment because it doesn't have its own page
+--Delete comment
+--Add comments to Post
+--Ensure there's UI to comment on comments, or remove this feature
 
 MATTER OF COURSE
 User (for logged in users)
@@ -35,7 +39,7 @@ Course
 //-has many enrollments
 //-has many students through enrollments class name User
 //-has many lessons
--has many posts as postable
+//-has many posts as postable
 
 //InstructionInvitation
 //-enum pending accepted
@@ -54,7 +58,7 @@ Lesson
 //-belongs to course 
 //-has many lesson_sections
 //-has many assignments
--has many posts as postable
+//-has many posts as postable
 
 LessonSection
 //-title
@@ -80,7 +84,7 @@ AssignmentSubmission
 //-belongs to student, class name User
 //-body
 -has many files (active storage/cloudinary)
--has many comments as reactable
+-has many comments as commentable
 
 Message
 //-belongs to sender class name User
@@ -98,14 +102,14 @@ Post
 //-body
 //-belongs to postable
 //-belongs to creator class name User
--has many comments as reactable
+-has many comments as commentable
 //-link from postables as a "View Discussion" link
 //-have display of post creator indicate their role (host, instructor, or student)
 
 Comment
--belongs to reactable
+-belongs to commentable
 -belongs to creator class name User
--has many comments as reactable
+-has many comments as commentable
 -body
 
 // TO DO: Delete button on message index page

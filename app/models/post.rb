@@ -1,4 +1,6 @@
 class Post < ApplicationRecord
+  validates :title, presence: true
+  validates :body, presence: true
   belongs_to :postable, polymorphic: true
   belongs_to :creator, class_name: 'User'
 
@@ -23,5 +25,9 @@ class Post < ApplicationRecord
 
   def authorized_to_view?(user)
     postable.authorized_to_view?(user)
+  end
+
+  def accepting_comments?
+    true
   end
 end

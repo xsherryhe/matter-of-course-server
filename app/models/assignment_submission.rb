@@ -1,8 +1,9 @@
 class AssignmentSubmission < ApplicationRecord
-  belongs_to :assignment, optional: true
-  belongs_to :student, class_name: 'User'
   validates :student_id, uniqueness: { scope: :assignment_id, message: 'is not unique' }, if: -> { assignment.present? }
   validate :complete_with_body
+  belongs_to :assignment, optional: true
+  belongs_to :student, class_name: 'User'
+  has_many :comments, as: :commentable, dependent: :destroy
 
   enum :completion_status, %i[incomplete complete], _default: :incomplete
 
@@ -21,6 +22,10 @@ class AssignmentSubmission < ApplicationRecord
     assignment&.title
   end
 
+  def course
+    assignment&.course
+  end
+
   def as_json(options = {})
     super({ include: [:assignment, { student: { methods: :name } }], methods: :title }.merge(options))
   end
@@ -35,6 +40,10 @@ class AssignmentSubmission < ApplicationRecord
 
   def authorized_to_edit?(user)
     user && student == user
+  end
+
+  def accepting_comments?
+    complete?
   end
 
   private

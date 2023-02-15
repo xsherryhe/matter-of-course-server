@@ -23,7 +23,8 @@ class User < ApplicationRecord
   has_many :enrollments, foreign_key: 'student_id'
   has_many :enrolled_courses, through: :enrollments, source: :course
   has_many :assignment_submissions, dependent: :destroy, foreign_key: 'student_id'
-  has_many :posts, foreign_key: 'creator_id'
+  has_many :posts, foreign_key: 'creator_id', dependent: :destroy
+  has_many :comments, foreign_key: 'creator_id', dependent: :destroy
   accepts_nested_attributes_for :profile
   attr_writer :login
 
