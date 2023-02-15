@@ -1,9 +1,3 @@
-// TO DO: Comment
-//--Don't use asResource for Comment because it doesn't have its own page
---Delete comment
---Add comments to Post
---Ensure there's UI to comment on comments, or remove this feature
-
 MATTER OF COURSE
 User (for logged in users)
 //-devise
@@ -84,7 +78,7 @@ AssignmentSubmission
 //-belongs to student, class name User
 //-body
 -has many files (active storage/cloudinary)
--has many comments as commentable
+//-has many comments as commentable
 
 Message
 //-belongs to sender class name User
@@ -102,15 +96,14 @@ Post
 //-body
 //-belongs to postable
 //-belongs to creator class name User
--has many comments as commentable
+//-has many comments as commentable
 //-link from postables as a "View Discussion" link
 //-have display of post creator indicate their role (host, instructor, or student)
 
 Comment
--belongs to commentable
--belongs to creator class name User
--has many comments as commentable
--body
+//-belongs to commentable
+//-belongs to creator class name User
+//-body
 
 // TO DO: Delete button on message index page
 // TO DO: Extract back links to a separate component

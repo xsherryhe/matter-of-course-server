@@ -3,6 +3,7 @@ class Post < ApplicationRecord
   validates :body, presence: true
   belongs_to :postable, polymorphic: true
   belongs_to :creator, class_name: 'User'
+  has_many :comments, as: :commentable, dependent: :destroy
 
   def as_json_with_details(options = {})
     as_json({ methods: :creator_role, include: { creator: { methods: :name } } }.merge(options))

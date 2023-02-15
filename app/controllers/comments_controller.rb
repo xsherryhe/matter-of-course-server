@@ -27,10 +27,18 @@ class CommentsController < ApplicationController
     return head :unauthorized unless current_user.authorized_to_edit?(@comment)
 
     if @comment.update(comment_params)
-      respond_with @comment, authorized: true
+      render json: @comment, authorized: true
     else
       render json: @comment.simplified_errors, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @comment = Comment.find(params[:id])
+    return head :unauthorized unless current_user.authorized_to_edit?(@comment)
+
+    @comment.destroy
+    head :ok
   end
 
   private

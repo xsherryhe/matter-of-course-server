@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   resources :posts, only: %i[show update destroy]
   get '/:postable_type/:postable_id/posts', to: 'posts#index'
   post '/:postable_type/:postable_id/posts', to: 'posts#create'
-  resources :comments, only: %i[update]
+  resources :comments, only: %i[update destroy]
   get '/:commentable_type/:commentable_id/comments', to: 'comments#index'
   post '/:commentable_type/:commentable_id/comments', to: 'comments#create'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
