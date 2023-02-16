@@ -3,7 +3,7 @@ class PostsController < ApplicationController
 
   def index
     @postable = postable_from_params
-    return head :unauthorized unless current_user.authorized_to_view?(@postable)
+    return head :unauthorized unless current_user.authorized_to_view_details?(@postable)
 
     @posts = @postable.posts
     respond_with @posts
@@ -18,6 +18,8 @@ class PostsController < ApplicationController
 
   def create
     @postable = postable_from_params
+    return head :unauthorized unless current_user.authorized_to_view_details?(@postable)
+
     @post = current_user.posts.build(post_params.merge(postable: @postable))
 
     if @post.save

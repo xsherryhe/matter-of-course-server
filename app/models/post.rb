@@ -25,7 +25,7 @@ class Post < ApplicationRecord
   end
 
   def authorized_to_view?(user)
-    postable.authorized_to_view?(user)
+    postable.authorized_to_view_details?(user)
   end
 
   def accepting_comments?

@@ -25,7 +25,11 @@ class Lesson < ApplicationRecord
   end
 
   def authorized_to_view?(user)
-    authorized_to_edit?(user) || course.enrolled?(user)
+    course.authorized_to_view_details?(user)
+  end
+
+  def authorized_to_view_details?(user)
+    authorized_to_view?(user)
   end
 
   def authorized_to_edit?(user)

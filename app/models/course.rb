@@ -26,7 +26,7 @@ class Course < ApplicationRecord
 
   scope :with_includes, -> { includes([{ host: :profile }, { instructors: :profile }]) }
   scope :on_page, lambda { |page = 1|
-    open.with_includes.order(title: :asc).limit(50).offset(50 * (page - 1))
+    with_includes.order(title: :asc).limit(50).offset(50 * (page - 1))
   }
   scope :authorized_for, lambda { |user|
     return where(status: :open) unless user
@@ -72,6 +72,10 @@ class Course < ApplicationRecord
 
   def authorized_to_view?(user)
     open? || authorized_to_edit?(user)
+  end
+
+  def authorized_to_view_details?(user)
+    (open? && enrolled?(user)) || authorized_to_edit?(user)
   end
 
   def authorized_to_edit?(user)

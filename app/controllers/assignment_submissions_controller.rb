@@ -23,6 +23,8 @@ class AssignmentSubmissionsController < ApplicationController
 
   def create
     @assignment = Assignment.find(params[:assignment_id])
+    return head :unauthorized unless current_user.authorized_to_view?(@assignment)
+
     @submission = current_user.assignment_submissions.build(assignment_submission_params.merge(assignment: @assignment))
 
     if @submission.save

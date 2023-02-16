@@ -52,16 +52,16 @@ class User < ApplicationRecord
     profile.full_name
   end
 
-  def all_courses(user)
+  def all_courses(user, page)
     { hosted: hosted_courses, instructed: instructed_courses, enrolled: enrolled_courses }.transform_values do |courses|
-      courses.authorized_for(user)
+      courses.authorized_for(user).on_page(page)
     end
   end
 
-  def all_assignment_submissions(user)
+  def all_assignment_submissions(user, page)
     return {} unless user == self
 
-    assignment_submissions.includes(:assignment).group_by(&:completion_status)
+    assignment_submissions.on_page(page).group_by(&:completion_status)
   end
 
   def inbox_messages
@@ -86,6 +86,10 @@ class User < ApplicationRecord
 
   def authorized_to_view?(resource)
     resource.authorized_to_view?(self)
+  end
+
+  def authorized_to_view_details?(resource)
+    resource.authorized_to_view_details?(self)
   end
 
   def authorized_to_edit?(resource)
