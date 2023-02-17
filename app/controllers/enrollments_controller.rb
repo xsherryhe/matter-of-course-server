@@ -9,7 +9,7 @@ class EnrollmentsController < ApplicationController
     @course = Course.find(params[:course_id])
     return head :unauthorized unless current_user.authorized_to_edit?(@course)
 
-    respond_with @course.enrollments.roster
+    respond_with @course.enrollments.on_page(params[:page] || 1).roster
   end
 
   def create
