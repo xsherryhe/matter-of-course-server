@@ -105,7 +105,15 @@ Comment
 //-belongs to creator class name User
 //-body
 
-// TO DO: Tab mechanism for course pages (e.g., assignments tab)
+// TO DO: Make discussion a tab on lessons. Individual posts still have their own page.
+// TO DO: Tab the student course pages: Overview, Lessons, Assignments, and Discussion
+  --differentiate from unenrolled page, which only has Overview
+  --assignments are subtabbed as My Assignments is, specificially for the course
+// TO DO: Delete assignments from Assignments tab on hostsed/instructed courses
+// TO DO: Lesson tabs 
+    - All (with edit and delete buttons), 
+    - Assignments (with edit button with form as subsection of lesson form, and delete buttons next to each assignment)
+    - Discussion
 // TO DO: Page scrolling through all list pages (e.g. user courses and user assignments) and subsections (e.g. assignments section of courses)
 // TO DO: Add "date completed" to completed assignment submissions
 // TO DO: Redirect unauthorized/need to sign in pages back to home page (alter fetcher error)

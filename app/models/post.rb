@@ -5,6 +5,8 @@ class Post < ApplicationRecord
   belongs_to :creator, class_name: 'User'
   has_many :comments, as: :commentable, dependent: :destroy
 
+  scope :on_page, ->(page = 1) { limit(50).offset(50 * (page - 1)) }
+
   def as_json_with_details(options = {})
     as_json({ methods: :creator_role, include: { creator: { methods: :name } } }.merge(options))
       .merge(options.key?(:authorized) ? { authorized: options[:authorized] } : {})

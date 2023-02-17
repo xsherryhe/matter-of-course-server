@@ -5,7 +5,7 @@ class PostsController < ApplicationController
     @postable = postable_from_params
     return head :unauthorized unless current_user.authorized_to_view_details?(@postable)
 
-    @posts = @postable.posts
+    @posts = @postable.posts.on_page(params[:page] || 1)
     respond_with @posts
   end
 
