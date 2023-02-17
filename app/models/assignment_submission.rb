@@ -31,15 +31,23 @@ class AssignmentSubmission < ApplicationRecord
   end
 
   def as_json_with_details(options = {})
-    as_json(options).merge(options.key?(:authorized) ? { authorized: options[:authorized] } : {})
+    return as_json(options) unless options.key?(:user)
+
+    as_json(options)
+      .merge({ owned: owned?(options[:user]),
+               authorized: authorized_to_edit?(options[:user]) })
+  end
+
+  def owned?(user)
+    user && student == user
   end
 
   def authorized_to_view?(user)
-    user && (student == user || (complete? && assignment.authorized_to_edit?(user)))
+    owned?(user) || (complete? && assignment.authorized_to_edit?(user))
   end
 
   def authorized_to_edit?(user)
-    user && student == user
+    owned?(user) && assignment&.authorized_to_view?(user)
   end
 
   def accepting_comments?

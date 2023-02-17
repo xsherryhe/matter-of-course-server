@@ -84,6 +84,10 @@ class User < ApplicationRecord
     course.enrolled?(self)
   end
 
+  def owned?(resource)
+    resource.owned?(self)
+  end
+
   def authorized_to_view?(resource)
     resource.authorized_to_view?(self)
   end

@@ -105,9 +105,6 @@ Comment
 //-belongs to creator class name User
 //-body
 
-// TO DO: Figure out what to do on closed courses about
-    // students not being able to view or create, but still able to edit/update/destroy posts
-    // students not being able to create, or as easily view, but still able to edit/update/destroy assignment submissions
 // TO DO: Remove students as instructor/host feature
 // TO DO: Show my courses on homepage if logged in, 
   // and redesign courses to show user role on course card instead of having sections

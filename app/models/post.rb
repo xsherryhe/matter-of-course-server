@@ -21,7 +21,7 @@ class Post < ApplicationRecord
   end
 
   def authorized_to_edit?(user)
-    user == creator
+    user == creator && authorized_to_view?(user)
   end
 
   def authorized_to_view?(user)

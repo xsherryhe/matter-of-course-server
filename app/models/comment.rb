@@ -23,6 +23,6 @@ class Comment < ApplicationRecord
   end
 
   def authorized_to_edit?(user)
-    creator == user
+    creator == user && commentable.authorized_to_view?(user) && commentable.accepting_comments?
   end
 end

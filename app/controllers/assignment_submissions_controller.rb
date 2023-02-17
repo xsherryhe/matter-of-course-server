@@ -18,29 +18,28 @@ class AssignmentSubmissionsController < ApplicationController
     return render json: false unless @submission
     return head :unauthorized unless current_user.authorized_to_view?(@submission)
 
-    render json: @submission.as_json_with_details(authorized: current_user.authorized_to_edit?(@submission))
+    render json: @submission.as_json_with_details(user: current_user)
   end
 
   def create
-    @assignment = Assignment.find(params[:assignment_id])
+    @assignment = assignment_from_params
     return head :unauthorized unless current_user.authorized_to_view?(@assignment)
 
     @submission = current_user.assignment_submissions.build(assignment_submission_params.merge(assignment: @assignment))
-
     if @submission.save
-      render json: @submission.as_json_with_details(authorized: true)
+      render json: @submission.as_json_with_details(user: current_user)
     else
       render json: @submission.simplified_errors, status: :unprocessable_entity
     end
   end
 
   def update
-    @assignment = Assignment.find(params[:assignment_id])
+    @assignment = assignment_from_params
     @submission = @assignment.assignment_submissions.find(params[:id])
     return head :unauthorized unless current_user.authorized_to_edit?(@submission)
 
     if @submission.update(assignment_submission_params)
-      render json: @submission.as_json_with_details(authorized: true)
+      render json: @submission.as_json_with_details(user: current_user)
     else
       render json: @submission.simplified_errors, status: :unprocessable_entity
     end
@@ -48,7 +47,7 @@ class AssignmentSubmissionsController < ApplicationController
 
   def destroy
     @submission = AssignmentSubmission.find(params[:id])
-    return head :unauthorized unless current_user.authorized_to_edit?(@submission)
+    return head :unauthorized unless current_user.owned?(@submission)
 
     @submission.destroy
     head :ok
@@ -64,6 +63,10 @@ class AssignmentSubmissionsController < ApplicationController
     parent_param = %i[course_id assignment_id].find { |param| params.key?(param) }
     parent_model = { course_id: Course, assignment_id: Assignment }[parent_param]
     parent_model.find(params[parent_param])
+  end
+
+  def assignment_from_params
+    Assignment.find(params[:assignment_id])
   end
 
   def submission_from_params
