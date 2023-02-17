@@ -105,9 +105,6 @@ Comment
 //-belongs to creator class name User
 //-body
 
-// TO DO: Remove students as instructor/host feature
-// TO DO: Show my courses on homepage if logged in, 
-  // and redesign courses to show user role on course card instead of having sections
 // TO DO: Tab mechanism for course pages (e.g., assignments tab)
 // TO DO: Page scrolling through all list pages (e.g. user courses and user assignments) and subsections (e.g. assignments section of courses)
 // TO DO: Add "date completed" to completed assignment submissions

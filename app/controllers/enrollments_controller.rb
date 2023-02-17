@@ -24,10 +24,9 @@ class EnrollmentsController < ApplicationController
   end
 
   def destroy
-    return head :unauthorized unless current_user.id == params[:id].to_i
-
     @course = Course.find(params[:course_id])
     @enrollment = @course.enrollments.find_by!(student_id: params[:id])
+    return head :unauthorized unless current_user.authorized_to_edit?(@enrollment)
 
     @enrollment.destroy
     head :ok

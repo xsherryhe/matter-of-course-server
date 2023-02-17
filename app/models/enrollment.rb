@@ -9,4 +9,8 @@ class Enrollment < ApplicationRecord
   def as_json(options = {})
     super({ include: { student: { methods: :name } } }.merge(options))
   end
+
+  def authorized_to_edit?(user)
+    user == student || course.authorized_to_edit?(user)
+  end
 end
