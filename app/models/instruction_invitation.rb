@@ -6,7 +6,7 @@ class InstructionInvitation < ApplicationRecord
   has_one :message, as: :messageable
 
   validate :recipient_not_yet_invited, on: :create
-  validate :recipient_not_yet_authorized
+  validate :recipient_not_yet_instructor
 
   enum :response, %i[unread pending accepted], _default: :unread
 
@@ -34,9 +34,9 @@ class InstructionInvitation < ApplicationRecord
     errors.add(:recipient, 'has already received an invitation')
   end
 
-  def recipient_not_yet_authorized
-    return unless !accepted? && recipient.authorized_to_edit?(course)
+  def recipient_not_yet_instructor
+    return unless !accepted? && recipient.instructed?(course)
 
-    errors.add(:recipient, 'is already a host or instructor')
+    errors.add(:recipient, 'is already an instructor')
   end
 end
