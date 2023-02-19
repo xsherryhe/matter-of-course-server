@@ -52,16 +52,18 @@ class User < ApplicationRecord
     profile.full_name
   end
 
-  def all_courses(user, page)
+  def all_courses(user, page, _)
     { hosted: hosted_courses, instructed: instructed_courses, enrolled: enrolled_courses }.transform_values do |courses|
       courses.authorized_for(user).on_page(page)
     end
   end
 
-  def all_assignment_submissions(user, page)
+  def all_assignment_submissions(user, page, scope = {})
     return {} unless user == self
 
-    assignment_submissions.on_page(page).group_by(&:completion_status)
+    assignment_submissions.by_course(scope[:course])
+                          .on_page(page)
+                          .group_by(&:completion_status)
   end
 
   def inbox_messages

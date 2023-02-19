@@ -17,6 +17,12 @@ class AssignmentSubmission < ApplicationRecord
   scope :by_student, lambda { |student_id|
     student_id ? with_includes.where(student_id:) : with_includes
   }
+  scope :by_course, lambda { |course_id|
+    return with_includes unless course_id
+
+    with_includes.joins(assignment: { lesson: :course })
+                 .where('course.id' => course_id)
+  }
 
   def title
     assignment&.title
