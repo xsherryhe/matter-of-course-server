@@ -5,8 +5,9 @@ class PostsController < ApplicationController
     @postable = postable_from_params
     return head :unauthorized unless current_user.authorized_to_view_details?(@postable)
 
-    @posts = @postable.posts.on_page(params[:page] || 1)
-    respond_with @posts
+    @page = params[:page]&.to_i || 1
+    @posts = @postable.posts
+    render json: { posts: @posts.on_page(@page), last_page: @posts.last_page?(@page) }
   end
 
   def show

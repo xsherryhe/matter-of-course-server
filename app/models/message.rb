@@ -13,11 +13,15 @@ class Message < ApplicationRecord
 
   scope :with_includes, -> { includes(sender: :profile, recipient: :profile) }
   scope :on_page, lambda { |page = 1|
-    with_includes.order(created_at: :desc).limit(50).offset(50 * (page - 1))
+    with_includes.order(created_at: :desc).limit(30).offset(30 * (page - 1))
   }
   scope :user_generated, -> { where(messageable: nil) }
 
   attr_accessor :recipient_login
+
+  def self.last_page?(page)
+    count <= page * 30
+  end
 
   def as_json(options = {})
     super({ include: [{ recipient: { methods: :name }, sender: { methods: :name } }] }.merge(options))

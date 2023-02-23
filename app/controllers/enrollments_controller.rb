@@ -9,7 +9,10 @@ class EnrollmentsController < ApplicationController
     @course = Course.find(params[:course_id])
     return head :unauthorized unless current_user.authorized_to_edit?(@course)
 
-    respond_with @course.enrollments.on_page(params[:page] || 1).roster
+    @page = params[:page]&.to_i || 1
+    @enrollments = @course.enrollments.roster
+    render json: { enrollments: @enrollments.on_page(@page),
+                   last_page: @enrollments.last_page?(@page) }
   end
 
   def create

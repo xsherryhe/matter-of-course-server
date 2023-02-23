@@ -10,11 +10,22 @@ class InstructionInvitation < ApplicationRecord
 
   enum :response, %i[unread pending accepted], _default: :unread
 
-  scope :on_page, ->(page = 1) { not_accepted.order(created_at: :desc).limit(50).offset(50 * (page - 1)) }
+  scope :with_includes, -> { includes(:course, :sender) }
+  scope :on_page, lambda { |page = 1|
+    with_includes.not_accepted.order(created_at: :desc).limit(20).offset(20 * (page - 1))
+  }
+
+  def self.last_page?(page)
+    count <= page * 20
+  end
 
   def accepted!
     super
     add_unique(course.instructors, [recipient])
+  end
+
+  def as_json(options = {})
+    super({ include: %i[course sender] }.merge(options))
   end
 
   private

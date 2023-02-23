@@ -9,8 +9,10 @@ class AssignmentSubmissionsController < ApplicationController
     @parent = parent_from_params
     return head :unauthorized unless current_user.authorized_to_edit?(@parent)
 
-    @submissions = @parent.assignment_submissions.complete.by_student(params[:student_id]).on_page(params[:page] || 1)
-    respond_with @submissions
+    @page = params[:page]&.to_i || 1
+    @submissions = @parent.assignment_submissions.complete.by_student(params[:student_id])
+
+    render json: { submissions: @submissions.on_page(@page), last_page: @submissions.last_page?(@page) }
   end
 
   def show

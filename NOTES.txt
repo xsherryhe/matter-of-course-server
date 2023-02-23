@@ -104,8 +104,7 @@ Comment
 //-belongs to commentable
 //-belongs to creator class name User
 //-body
-
-// TO DO: Page scrolling through all list pages (e.g. user courses and user assignments) and subsections (e.g. assignments section of courses)
+ 
 // TO DO: Add "date completed" to completed assignment submissions
 // TO DO: Redirect unauthorized/need to sign in pages back to home page (alter fetcher error)
 // TO DO: Add "hooks" for non-logged in users to sign in or sign up (e.g. to enroll in a course)
@@ -123,6 +122,9 @@ Comment
 // TO DO: Password validation
 // TO DO: Testing
 // TO DO: Fade in animation of homepage
+
+// TO DO: "See All Submissions" link on course roster leading to a separate page with pagination for students who submitted more than 10 assignments
+// TO DO: Commenting on comments
 // TO DO: Make closed courses less restrictive but more specific: 
     --students can view course, lessons, assignments, and discussion; and edit assignments and discussion
     --but students cannot create new assignments or discussion posts

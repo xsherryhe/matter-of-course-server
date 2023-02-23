@@ -4,6 +4,11 @@ class Comment < ApplicationRecord
   belongs_to :creator, class_name: 'User'
 
   scope :with_includes, -> { includes(creator: :profile) }
+  scope :on_page, ->(page = 1) { with_includes.order(created_at: :asc).limit(10).offset(10 * (page - 1)) }
+
+  def self.last_page?(page)
+    count <= page * 10
+  end
 
   def course
     commentable.course

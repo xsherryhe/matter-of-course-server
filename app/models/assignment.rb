@@ -6,7 +6,15 @@ class Assignment < ApplicationRecord
   belongs_to :lesson
   has_many :assignment_submissions, dependent: :nullify
 
+  scope :on_page, lambda { |page = 1|
+    joins(:lesson).order('lessons.order asc', order: :asc).limit(30).offset(30 * (page - 1))
+  }
+
   attr_accessor :temp_id
+
+  def self.last_page?(page)
+    count <= page * 30
+  end
 
   def id
     super || temp_id

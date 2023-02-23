@@ -2,8 +2,9 @@ class MessagesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @messages = current_user.public_send("#{params[:type]}_messages").on_page(params[:page] || 1)
-    respond_with @messages
+    @page = params[:page]&.to_i || 1
+    @messages = current_user.public_send("#{params[:type]}_messages")
+    render json: { messages: @messages.on_page(@page), last_page: @messages.last_page?(@page) }
   end
 
   def show

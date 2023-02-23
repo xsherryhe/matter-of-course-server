@@ -12,7 +12,7 @@ class AssignmentSubmission < ApplicationRecord
     with_includes.joins(assignment: [:lesson])
                  .order('profiles.first_name asc', 'profiles.last_name asc',
                         'lessons.order asc', 'assignments.order asc')
-                 .limit(50).offset(50 * (page - 1))
+                 .limit(20).offset(20 * (page - 1))
   }
   scope :by_student, lambda { |student_id|
     student_id ? with_includes.where(student_id:) : with_includes
@@ -23,6 +23,10 @@ class AssignmentSubmission < ApplicationRecord
     with_includes.joins(assignment: { lesson: :course })
                  .where('course.id' => course_id)
   }
+
+  def self.last_page?(page)
+    count <= page * 20
+  end
 
   def title
     assignment&.title
@@ -41,11 +45,16 @@ class AssignmentSubmission < ApplicationRecord
 
     as_json(options)
       .merge({ owned: owned?(options[:user]),
-               authorized: authorized_to_edit?(options[:user]) })
+               authorized: authorized_to_edit?(options[:user]),
+               assignment_authorized: assignment_authorized?(options[:user]) })
   end
 
   def owned?(user)
     user && student == user
+  end
+
+  def assignment_authorized?(user)
+    assignment&.authorized_to_view?(user)
   end
 
   def authorized_to_view?(user)
@@ -53,7 +62,7 @@ class AssignmentSubmission < ApplicationRecord
   end
 
   def authorized_to_edit?(user)
-    owned?(user) && assignment&.authorized_to_view?(user)
+    owned?(user) && assignment_authorized?(user)
   end
 
   def accepting_comments?

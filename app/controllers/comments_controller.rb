@@ -5,8 +5,10 @@ class CommentsController < ApplicationController
     @commentable = commentable_from_params
     return head :unauthorized unless current_user.authorized_to_view?(@commentable)
 
-    @comments = @commentable.comments.with_includes
-    respond_with @comments, user: current_user
+    @page = params[:page]&.to_i || 1
+    @comments = @commentable.comments
+    render json: { comments: @comments.on_page(@page).as_json(user: current_user),
+                   last_page: @comments.last_page?(@page) }
   end
 
   def create

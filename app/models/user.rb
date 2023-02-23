@@ -53,17 +53,26 @@ class User < ApplicationRecord
   end
 
   def all_courses(user, page, _)
-    { hosted: hosted_courses, instructed: instructed_courses, enrolled: enrolled_courses }.transform_values do |courses|
-      courses.authorized_for(user).on_page(page)
+    hosted_page, instructed_page, enrolled_page = page.split(',').map(&:to_i)
+
+    { hosted: [hosted_courses, hosted_page],
+      instructed: [instructed_courses, instructed_page],
+      enrolled: [enrolled_courses, enrolled_page] }.transform_values do |courses, courses_page|
+      { courses: courses.authorized_for(user).on_page(courses_page),
+        last_page: courses.last_page?(courses_page) }
     end
   end
 
   def all_assignment_submissions(user, page, scope = {})
     return {} unless user == self
 
-    assignment_submissions.by_course(scope[:course])
-                          .on_page(page)
-                          .group_by(&:completion_status)
+    incomplete_page, complete_page = page.split(',').map(&:to_i)
+    all_submissions = assignment_submissions.by_course(scope[:course])
+    { incomplete: [all_submissions.incomplete, incomplete_page],
+      complete: [all_submissions.complete, complete_page] }.transform_values do |submissions, submissions_page|
+      { submissions: submissions.on_page(submissions_page),
+        last_page: submissions.last_page?(submissions_page) }
+    end
   end
 
   def inbox_messages

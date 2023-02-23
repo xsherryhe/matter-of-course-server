@@ -2,8 +2,10 @@ class CoursesController < ApplicationController
   before_action :authenticate_user!, only: %i[create update destroy]
 
   def index
-    @courses = Course.open.on_page(params[:page] || 1)
-    respond_with @courses
+    @page = params[:page]&.to_i || 1
+    @courses = Course.open
+    render json: { courses: @courses.on_page(@page),
+                   last_page: @courses.last_page?(@page) }
   end
 
   def show

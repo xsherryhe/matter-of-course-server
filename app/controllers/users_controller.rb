@@ -13,7 +13,7 @@ def methods_from_params
   methods = {}
   if params[:with]
     with = params[:with].to_sym
-    methods[with] = @user.public_send(with, current_user, params[:page] || 1, scope_from_params)
+    methods[with] = @user.public_send(with, current_user, params[:page], scope_from_params)
   end
   methods
 end

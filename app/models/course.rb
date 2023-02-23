@@ -26,7 +26,7 @@ class Course < ApplicationRecord
 
   scope :with_includes, -> { includes([{ host: :profile }, { instructors: :profile }]) }
   scope :on_page, lambda { |page = 1|
-    with_includes.order(title: :asc).limit(50).offset(50 * (page - 1))
+    with_includes.order(title: :asc).limit(30).offset(30 * (page - 1))
   }
   scope :authorized_for, lambda { |user|
     return where(status: :open) unless user
@@ -41,6 +41,10 @@ class Course < ApplicationRecord
 
   attr_accessor :editor, :instructor_logins, :instructor_logins_by_validity
 
+  def self.last_page?(page = 1)
+    count <= page * 30
+  end
+
   def as_json(options = {})
     super({ include: [{ host: { methods: :name } }, { instructors: { methods: :name } }] }.merge(options))
   end
@@ -51,7 +55,6 @@ class Course < ApplicationRecord
       include: [{ host: { methods: :name } }, { instructors: { methods: :name } }]
     }.merge(options))
       .merge({ lessons: lessons_as_json })
-      .merge({ assignments: assignments_as_json })
       .merge(authorized ? instruction_invitations_as_json : {})
       .merge(options.key?(:authorized) ? { authorized: } : {})
       .merge(options.key?(:hosted) ? { hosted: options[:hosted] } : {})
@@ -94,10 +97,6 @@ class Course < ApplicationRecord
 
   def lessons_as_json
     lessons.order(order: :asc).as_json
-  end
-
-  def assignments_as_json
-    assignments.joins(:lesson).order('lessons.order asc', order: :asc).as_json
   end
 
   def instruction_invitations_as_json

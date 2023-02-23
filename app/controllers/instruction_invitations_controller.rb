@@ -1,15 +1,13 @@
 class InstructionInvitationsController < ApplicationController
   def index
+    @page = params[:page]&.to_i || 1
     @invitations = current_user.received_instruction_invitations
-                               .on_page(params[:page] || 1)
-                               .includes(:course, :sender)
-    respond_with @invitations, include: %i[course sender]
+    render json: { invitations: @invitations.on_page(@page), last_page: @invitations.last_page?(@page) }
   end
 
   def batch_update
-    @invitations = current_user.received_instruction_invitations
-                               .on_page(params[:page] || 1)
-                               .includes(:course, :sender)
+    @page = params[:page]&.to_i || 1
+    @invitations = current_user.received_instruction_invitations.on_page(@page)
 
     @invitations.each { |invitation| invitation.pending! if invitation.unread? } if params[:read]
     head :ok
