@@ -1,6 +1,7 @@
 class AssignmentSubmission < ApplicationRecord
+  before_validation :set_completed_at
   validates :student_id, uniqueness: { scope: :assignment_id, message: 'is not unique' }, if: -> { assignment.present? }
-  validate :complete_with_body
+  validate :complete_with_body_and_completed_at
   belongs_to :assignment, optional: true
   belongs_to :student, class_name: 'User'
   has_many :comments, as: :commentable, dependent: :destroy
@@ -71,9 +72,16 @@ class AssignmentSubmission < ApplicationRecord
 
   private
 
-  def complete_with_body
-    return unless complete? && body.blank?
+  def set_completed_at
+    return unless complete? && completed_at.blank?
 
-    errors.add(:body, "can't be blank")
+    self.completed_at = DateTime.current
+  end
+
+  def complete_with_body_and_completed_at
+    return unless complete?
+
+    errors.add(:body, "can't be blank") if body.blank?
+    errors.add(:completed_at, "can't be blank") if completed_at.blank?
   end
 end
