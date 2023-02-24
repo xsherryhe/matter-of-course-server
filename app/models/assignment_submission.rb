@@ -37,8 +37,15 @@ class AssignmentSubmission < ApplicationRecord
     assignment&.course
   end
 
+  def completion_date
+    return unless completed_at.present?
+
+    completed_at.localtime.strftime(DateTime.current - 1.year < completed_at ? '%-m/%-d' : '%-m/%-d/%y')
+  end
+
   def as_json(options = {})
-    super({ include: [:assignment, { student: { methods: :name } }], methods: :title }.merge(options))
+    super({ include: [:assignment, { student: { methods: :name } }],
+            methods: %i[title completion_date] }.merge(options))
   end
 
   def as_json_with_details(options = {})
