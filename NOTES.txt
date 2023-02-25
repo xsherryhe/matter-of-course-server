@@ -105,20 +105,12 @@ Comment
 //-belongs to creator class name User
 //-body
  
-// TO DO: Add "date completed" to completed assignment submissions
-    --On "My Assignments" and on course user assignments (user assignment submissions component)
-    --On assignment submissions pages
-    --On Course Roster page
-    --on individual completed assignment submission pages
-// TO DO: Add header "hooks" for non-logged in users to sign in or sign up -- i.e. header links are available but all lead to sign in page
-// TO DO: Prev lesson / next lesson buttons on lesson pages
 // TO DO: Error catching from fetcher
   --in asResource, if catchError is false, send both the status and the fetcher error message as error.data.error
   --when catching 401 unauthorized errors at the asResource level, 
     set a flash error message then use the handleDelete redirect or a default of home
   --in other places, use a redirectUnauthorized similar to in LessonForm
   --make sure unauthorized pages are all redirected back to a different page or homepage
-// TO DO: Set default_url_options in production
 // TO DO: Other devise routes (e.g. edit account, forgot password)
   //user profile pages
   //for destroy user, make them change the host of the courses and show error if hosts are not changed (destroy returns false)
@@ -126,6 +118,7 @@ Comment
 // TO DO: Password validation
 // TO DO: Testing
 // TO DO: Fade in animation of homepage
+// TO DO: Set default_url_options in production
 
 // TO DO: "See All Submissions" link on course roster leading to a separate page with pagination for students who submitted more than 10 assignments
 // TO DO: Commenting on comments

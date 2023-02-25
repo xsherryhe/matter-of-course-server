@@ -14,10 +14,16 @@ class Lesson < ApplicationRecord
 
   def as_json_with_details(options = {})
     authorized = options[:authorized]
-    as_json(options)
+    as_json({ methods: :adjacent_ids }.merge(options))
       .merge({ lesson_sections: lesson_sections_as_json })
       .merge({ assignments: assignments_as_json })
       .merge(options.key?(:authorized) ? { authorized: } : {})
+  end
+
+  def adjacent_ids
+    { previous: -1, next: 1 }.transform_values do |offset|
+      course.lessons.find_by(order: order + offset)&.id
+    end
   end
 
   def simplified_errors(options = {})
