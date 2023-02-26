@@ -106,7 +106,10 @@ Comment
 //-body
  
 // TO DO: Error catching from fetcher
-  --in asResource, if catchError is false, send both the status and the fetcher error message as error.data.error
+  --KEY: instead of throwing errors in fetcher, return objects with status and data.error!
+    --change fetcher thrown errors to include status
+    --the catch method should set the thrown fetcher error message as data.error
+    --in asResource, if catchError is false, send both the status and the fetcher error message as data.error
   --when catching 401 unauthorized errors at the asResource level, 
     set a flash error message then use the handleDelete redirect or a default of home
   --in other places, use a redirectUnauthorized similar to in LessonForm
