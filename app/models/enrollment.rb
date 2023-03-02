@@ -2,6 +2,7 @@ class Enrollment < ApplicationRecord
   belongs_to :course
   belongs_to :student, class_name: 'User'
   validates :student_id, uniqueness: { scope: :course_id, message: 'is not unique' }
+  validate :student_not_authorized_to_edit_course
 
   scope :with_includes, -> { includes(student: :profile) }
   scope :on_page, ->(page = 1) { with_includes.limit(30).offset(30 * (page - 1)) }
@@ -17,5 +18,13 @@ class Enrollment < ApplicationRecord
 
   def authorized_to_edit?(user)
     user == student || course.authorized_to_edit?(user)
+  end
+
+  private
+
+  def student_not_authorized_to_edit
+    return unless course.authorized_to_edit?(student)
+
+    errors.add(:student, 'is a host or instructor for the course')
   end
 end
