@@ -16,6 +16,11 @@ class AssignmentSubmissionsController < ApplicationController
   end
 
   def show
+    if params[:assignment_id]
+      @assignment = assignment_from_params
+      return head :unauthorized unless current_user.authorized_to_view?(@assignment)
+    end
+
     @submission = submission_from_params
     return render json: false unless @submission
     return head :unauthorized unless current_user.authorized_to_view?(@submission)
@@ -73,7 +78,7 @@ class AssignmentSubmissionsController < ApplicationController
 
   def submission_from_params
     if params[:assignment_id]
-      current_user.assignment_submissions.find_by(assignment_id: params[:assignment_id])
+      current_user.assignment_submissions.find_by(assignment: @assignment)
     else
       AssignmentSubmission.find(params[:id])
     end
