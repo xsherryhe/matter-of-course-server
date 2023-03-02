@@ -3,7 +3,7 @@ class UsersController < ApplicationController
     @user = params[:id] ? User.find(params[:id]) : current_user
     return respond_with false unless @user
 
-    respond_with @user, methods_from_params
+    render json: @user.as_json_with_details(methods_from_params)
   end
 end
 

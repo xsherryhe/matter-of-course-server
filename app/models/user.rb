@@ -112,7 +112,11 @@ class User < ApplicationRecord
   end
 
   def as_json(options = {})
-    json = super({ methods: :name }.merge(options))
+    super({ methods: :name }.merge(options))
+  end
+
+  def as_json_with_details(options = {})
+    json = as_json({ include: :profile }.merge(options))
     %i[all_courses all_assignment_submissions].each { |key| json[key] = options[key] if options.key?(key) }
     json
   end

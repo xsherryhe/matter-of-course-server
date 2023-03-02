@@ -105,18 +105,18 @@ Comment
 //-belongs to creator class name User
 //-body
  
-// TO DO: Error catching from fetcher
-  --KEY: instead of throwing errors in fetcher, return objects with status and data.error!
-    --change fetcher thrown errors to include status
-    --the catch method should set the thrown fetcher error message as data.error
-    --in asResource, if catchError is false, send both the status and the fetcher error message as data.error
-  --when catching 401 unauthorized errors at the asResource level, 
-    set a flash error message then use the handleDelete redirect or a default of home
-  --in other places, use a redirectUnauthorized similar to in LessonForm
-  --make sure unauthorized pages are all redirected back to a different page or homepage
 // TO DO: Other devise routes (e.g. edit account, forgot password)
   //user profile pages
+      --full name, username, email, hosted/instructed/enrolled courses
+          --adjust user as json with details to include profile
+      --Edit profile/registration link on user profile pages
   //for destroy user, make them change the host of the courses and show error if hosts are not changed (destroy returns false)
+      --Make a re-assign host component which sends an invitation to become the host of a course
+      --Have a cancel account button that either is a delete button or navigates to a "cannot delete yet" page
+        --Depending on whether or not the user is the host of any courses or instructor of any 1-instructor courses
+        --Cannt delete yet page has re-assign host component and instruction invitation components
+  //mailer set-up
+// TO DO: Media/files/image storage
 // TO DO: Delete unused devise views and routes
 // TO DO: Password validation
 // TO DO: Testing
