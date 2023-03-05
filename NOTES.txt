@@ -106,10 +106,7 @@ Comment
 //-body
  
 // TO DO: Other devise routes (e.g. edit account, forgot password)
-  //user profile pages
-      --full name, username, email, hosted/instructed/enrolled courses
-          --adjust user as json with details to include profile
-      --Edit profile/registration link on user profile pages
+  //next: create new password after clicking reset password link in email
   //for destroy user, make them change the host of the courses and show error if hosts are not changed (destroy returns false)
       --Make a re-assign host component which sends an invitation to become the host of a course
       --Have a cancel account button that either is a delete button or navigates to a "cannot delete yet" page
