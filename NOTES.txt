@@ -106,7 +106,6 @@ Comment
 //-body
  
 // TO DO: Other devise routes (e.g. edit account, forgot password)
-  //next: create new password after clicking reset password link in email
   //for destroy user, make them change the host of the courses and show error if hosts are not changed (destroy returns false)
       --Make a re-assign host component which sends an invitation to become the host of a course
       --Have a cancel account button that either is a delete button or navigates to a "cannot delete yet" page
@@ -118,7 +117,9 @@ Comment
 // TO DO: Password validation
 // TO DO: Testing
 // TO DO: Fade in animation of homepage
-// TO DO: Set default_url_options in production
+// TO DO: Set default_url_options in production, 
+         set front_end variable in production, 
+         set mailer_sender in devise config
 
 // TO DO: "See All Submissions" link on course roster leading to a separate page with pagination for students who submitted more than 10 assignments
 // TO DO: Commenting on comments
