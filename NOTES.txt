@@ -110,8 +110,7 @@ Comment
       --Make a re-assign host component which sends an invitation to become the host of a course
       --Have a cancel account button that either is a delete button or navigates to a "cannot delete yet" page
         --Depending on whether or not the user is the host of any courses or instructor of any 1-instructor courses
-        --Cannt delete yet page has re-assign host component and instruction invitation components
-  //mailer set-up
+        --Cannot delete yet page has re-assign host component and instruction invitation components
 // TO DO: Media/files/image storage
 // TO DO: Delete unused devise views and routes
 // TO DO: Password validation
