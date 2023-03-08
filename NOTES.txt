@@ -110,6 +110,8 @@ Comment
       --Have a cancel account button that either is a delete button or navigates to a "cannot delete yet" page
         --Depending on whether or not the user is the host of any courses or instructor of any 1-instructor courses
         --Cannot delete yet page has re-assign host component and instruction invitation components
+        --Update the "cannot delete yet" page with conflicts and indicate "no conflicts" + button to delete account if all conflicts resolved
+        --For instruction invitation component, have a return to homepage button at bottom of section
 // TO DO: Media/files/image storage
 // TO DO: Delete unused devise views and routes
 // TO DO: Password validation

@@ -63,6 +63,10 @@ class User < ApplicationRecord
     end
   end
 
+  def exclusive_authorized_courses(user, _, _)
+    user == self ? { hosted: hosted_courses, instructed: instructed_courses.single_instructor } : {}
+  end
+
   def all_assignment_submissions(user, page, scope = {})
     return {} unless user == self
 
@@ -117,7 +121,8 @@ class User < ApplicationRecord
 
   def as_json_with_details(options = {})
     json = as_json({ include: :profile }.merge(options))
-    %i[all_courses all_assignment_submissions].each { |key| json[key] = options[key] if options.key?(key) }
+    %i[all_courses exclusive_authorized_courses all_assignment_submissions]
+      .each { |key| json[key] = options[key] if options.key?(key) }
     json
   end
 end

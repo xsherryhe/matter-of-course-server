@@ -38,6 +38,11 @@ class Course < ApplicationRecord
          .distinct
          .with_includes
   }
+  scope :single_instructor, lambda { 
+    joins(:instructors)
+    .group(:id)
+    .having('count(instructed_courses_instructors.instructor_id) = 1') 
+  }
 
   attr_accessor :editor, :instructor_logins, :instructor_logins_by_validity
 
