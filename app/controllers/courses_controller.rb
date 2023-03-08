@@ -34,7 +34,8 @@ class CoursesController < ApplicationController
     return head :unauthorized unless current_user.authorized_to_edit?(@course)
 
     if @course.update(course_params.merge(editor: current_user))
-      render json: @course.as_json_with_details(hosted: current_user == @course.host, authorized: true)
+      render json: @course.as_json_with_details(hosted: current_user.hosted?(@course), 
+                                                authorized: current_user.authorized_to_edit?(@course))
     else
       render json: @course.simplified_errors, status: :unprocessable_entity
     end
@@ -52,6 +53,6 @@ class CoursesController < ApplicationController
 
   def course_params
     params.require(:course)
-          .permit(:title, :description, :status, :instructor_logins, lessons_attributes: %i[id order _destroy])
+          .permit(:title, :description, :status, :host_id, :instructor_logins, lessons_attributes: %i[id order _destroy])
   end
 end
