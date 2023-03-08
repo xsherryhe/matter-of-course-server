@@ -21,7 +21,7 @@ class InstructionInvitation < ApplicationRecord
 
   def accepted!
     super
-    add_unique(course.instructors, [recipient])
+    promote_recipient_to_instructor
   end
 
   def as_json(options = {})
@@ -37,6 +37,11 @@ class InstructionInvitation < ApplicationRecord
       subject: "#{sender.username} has invited you to instruct a course!",
       body: 'Respond to Invitation'
     )
+  end
+
+  def promote_recipient_to_instructor
+    add_unique(course.instructors, [recipient])
+    course.enrollments.find_by(student: recipient)&.destroy
   end
 
   def recipient_not_yet_invited
