@@ -43,6 +43,13 @@ class RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  def destroy
+    resource.destroy
+    Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
+    yield resource if block_given?
+    head :ok
+  end
+
   private
 
   def configure_sign_up_params
