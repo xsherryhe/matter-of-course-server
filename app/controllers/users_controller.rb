@@ -3,7 +3,7 @@ class UsersController < ApplicationController
     @user = params[:id] ? User.find(params[:id]) : current_user
     return respond_with false unless @user
 
-    render json: @user.as_json_with_details(methods_from_params)
+    render json: @user.as_json_with_details(methods_from_params.merge({ avatar_url: }))
   end
 end
 
@@ -25,4 +25,9 @@ def scope_from_params
     key, value = string.split('_')
     hash[key.to_sym] = value.to_i
   end
+end
+
+def avatar_url
+  @profile = @user.profile
+  @profile.avatar.present? ? url_for(@profile.avatar) : @profile.default_avatar_url
 end

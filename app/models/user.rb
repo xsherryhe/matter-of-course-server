@@ -117,6 +117,7 @@ class User < ApplicationRecord
 
   def as_json(options = {})
     super({ methods: :name }.merge(options))
+      .merge(options[:avatar_url] ? { avatar_url: options[:avatar_url] } : {})
   end
 
   def as_json_with_details(options = {})

@@ -106,6 +106,8 @@ Comment
 //-body
  
 // TO DO: Media/files/image storage
+    --Replace user name with avatar and name in different components on front end
+    --Add Cloudinary gem for production and change production config
 // TO DO: Delete unused devise views and routes
 // TO DO: Password validation
 // TO DO: Testing
