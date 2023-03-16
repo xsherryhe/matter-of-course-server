@@ -24,7 +24,7 @@ class Message < ApplicationRecord
   end
 
   def as_json(options = {})
-    super({ include: [{ recipient: { methods: :name }, sender: { methods: :name } }] }.merge(options))
+    super({ include: [{ recipient: { methods: %i[name avatar_url] }, sender: { methods: %i[name avatar_url] } }] }.merge(options))
   end
 
   def as_json_with_details(options = {})

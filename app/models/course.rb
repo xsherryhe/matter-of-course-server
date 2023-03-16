@@ -51,13 +51,15 @@ class Course < ApplicationRecord
   end
 
   def as_json(options = {})
-    super({ include: [{ host: { methods: :name } }, { instructors: { methods: :name } }] }.merge(options))
+    super({ include: [{ host: { methods: %i[name avatar_url] } }, 
+                      { instructors: { methods: %i[name avatar_url] } }] }
+          .merge(options))
   end
 
   def as_json_with_details(options = {})
     authorized = options[:authorized]
     as_json({
-      include: [{ host: { methods: :name } }, { instructors: { methods: :name } }]
+      include: [{ host: { methods: %i[name avatar_url] } }, { instructors: { methods: %i[name avatar_url] } }]
     }.merge(options))
       .merge({ lessons: lessons_as_json })
       .merge(authorized ? instruction_invitations_as_json : {})
@@ -105,7 +107,10 @@ class Course < ApplicationRecord
   end
 
   def instruction_invitations_as_json
-    { instruction_invitations: instruction_invitations.not_accepted.as_json(include: :recipient) }
+    { instruction_invitations: instruction_invitations
+        .not_accepted
+        .with_recipient
+        .as_json(include: { recipient: { methods: :avatar_url } }) }
   end
 
   def add_host_as_instructor

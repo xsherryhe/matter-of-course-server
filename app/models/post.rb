@@ -12,7 +12,7 @@ class Post < ApplicationRecord
   end
 
   def as_json_with_details(options = {})
-    as_json({ methods: :creator_role, include: { creator: { methods: :name } } }.merge(options))
+    as_json({ methods: :creator_role, include: { creator: { methods: %i[name avatar_url] } } }.merge(options))
       .merge(options.key?(:authorized) ? { authorized: options[:authorized] } : {})
   end
 

@@ -13,7 +13,7 @@ class Enrollment < ApplicationRecord
   end
 
   def as_json(options = {})
-    super({ include: { student: { methods: :name } } }.merge(options))
+    super({ include: { student: { methods: %i[name avatar_url] } } }.merge(options))
   end
 
   def authorized_to_edit?(user)
@@ -22,7 +22,7 @@ class Enrollment < ApplicationRecord
 
   private
 
-  def student_not_authorized_to_edit
+  def student_not_authorized_to_edit_course
     return unless course.authorized_to_edit?(student)
 
     errors.add(:student, 'is a host or instructor for the course')

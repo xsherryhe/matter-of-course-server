@@ -12,7 +12,7 @@ class CoursesController < ApplicationController
     @course = Course.find(params[:id])
 
     unless @course.authorized_to_view?(current_user)
-      return respond_with @course, only: :status, include: [host: { methods: :name }], status: :unauthorized
+      return respond_with @course, only: :status, include: [host: { methods: %i[name avatar_url] }], status: :unauthorized
     end
 
     render json: @course.as_json_with_details(hosted: current_user&.hosted?(@course),

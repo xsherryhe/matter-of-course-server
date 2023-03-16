@@ -23,7 +23,7 @@ class Comment < ApplicationRecord
   end
 
   def as_json(options)
-    super({ methods: :creator_role, include: { creator: { methods: :name } } }.merge(options))
+    super({ methods: :creator_role, include: { creator: { methods: %i[name avatar_url] } } }.merge(options))
       .merge({ authorized: options[:authorized] || authorized_to_edit?(options[:user]) })
   end
 

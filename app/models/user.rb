@@ -26,6 +26,8 @@ class User < ApplicationRecord
   has_many :posts, foreign_key: 'creator_id', dependent: :destroy
   has_many :comments, foreign_key: 'creator_id', dependent: :destroy
   accepts_nested_attributes_for :profile
+
+  include Rails.application.routes.url_helpers
   attr_writer :login
 
   def login
@@ -50,6 +52,10 @@ class User < ApplicationRecord
 
   def name
     profile.full_name
+  end
+
+  def avatar_url
+    profile.avatar.present? ? url_for(profile.avatar) : profile.default_avatar_url
   end
 
   def all_courses(user, page, _)
@@ -116,8 +122,7 @@ class User < ApplicationRecord
   end
 
   def as_json(options = {})
-    super({ methods: :name }.merge(options))
-      .merge(options[:avatar_url] ? { avatar_url: options[:avatar_url] } : {})
+    super({ methods: %i[name avatar_url] }.merge(options))
   end
 
   def as_json_with_details(options = {})

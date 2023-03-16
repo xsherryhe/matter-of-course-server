@@ -44,7 +44,7 @@ class AssignmentSubmission < ApplicationRecord
   end
 
   def as_json(options = {})
-    super({ include: [:assignment, { student: { methods: :name } }],
+    super({ include: [:assignment, { student: { methods: %i[name avatar_url] } }],
             methods: %i[title completion_date] }.merge(options))
   end
 

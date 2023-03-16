@@ -10,7 +10,8 @@ class InstructionInvitation < ApplicationRecord
 
   enum :response, %i[unread pending accepted], _default: :unread
 
-  scope :with_includes, -> { includes(:course, :sender) }
+  scope :with_includes, -> { includes(:course, sender: :profile) }
+  scope :with_recipient, -> { includes(recipient: :profile) }
   scope :on_page, lambda { |page = 1|
     with_includes.not_accepted.order(created_at: :desc).limit(20).offset(20 * (page - 1))
   }
@@ -25,7 +26,7 @@ class InstructionInvitation < ApplicationRecord
   end
 
   def as_json(options = {})
-    super({ include: %i[course sender] }.merge(options))
+    super({ include: [:course, { sender: { methods: %i[avatar_url] } }] }.merge(options))
   end
 
   private

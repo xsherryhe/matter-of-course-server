@@ -106,7 +106,7 @@ Comment
 //-body
  
 // TO DO: Media/files/image storage
-    --Replace user name with avatar and name in different components on front end
+    --Add avatar field to new and edit profile/registration
     --Add Cloudinary gem for production and change production config
 // TO DO: Delete unused devise views and routes
 // TO DO: Password validation
@@ -118,6 +118,7 @@ Comment
 
 // TO DO: "See All Submissions" link on course roster leading to a separate page with pagination for students who submitted more than 10 assignments
 // TO DO: Commenting on comments
+// TO DO: Replace user name with avatar and name to course message recipient dropdown
 // TO DO: Make closed courses less restrictive but more specific: 
     --students can view course, lessons, assignments, and discussion; and edit assignments and discussion
     --but students cannot create new assignments or discussion posts
