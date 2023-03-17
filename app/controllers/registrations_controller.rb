@@ -54,12 +54,12 @@ class RegistrationsController < Devise::RegistrationsController
 
   def configure_sign_up_params
     devise_parameter_sanitizer.permit :sign_up,
-                                      keys: [profile_attributes: %i[first_name middle_name last_name]]
+                                      keys: [profile_attributes: %i[first_name middle_name last_name avatar]]
   end
 
   def configure_account_update_params
     devise_parameter_sanitizer.permit :account_update,
-                                      keys: [profile_attributes: %i[id first_name middle_name last_name]]
+                                      keys: [profile_attributes: %i[id first_name middle_name last_name avatar]]
   end
 
   def message_for_update(prev_unconfirmed_email)

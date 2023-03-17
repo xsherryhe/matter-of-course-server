@@ -1,6 +1,8 @@
 class Profile < ApplicationRecord
   validates :first_name, presence: true
   validates :last_name, presence: true
+  validates :avatar, content_type: { in: ['image/jpeg', 'image/jpg', 'image/png', 'image/svg', 'image/gif'],
+                                     message: 'is not an image (PNG, JPG, JPEG, SVG, or GIF)' }
   belongs_to :user
   has_one_attached :avatar
 

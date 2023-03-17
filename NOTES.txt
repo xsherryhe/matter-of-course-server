@@ -106,7 +106,6 @@ Comment
 //-body
  
 // TO DO: Media/files/image storage
-    --Add avatar field to new and edit profile/registration
     --Add Cloudinary gem for production and change production config
 // TO DO: Delete unused devise views and routes
 // TO DO: Password validation

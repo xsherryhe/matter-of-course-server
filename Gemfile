@@ -75,3 +75,4 @@ end
 gem 'devise'
 gem 'rack-cors'
 gem 'figaro'
+gem 'active_storage_validations'
