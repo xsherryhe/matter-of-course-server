@@ -27,7 +27,6 @@ class User < ApplicationRecord
   has_many :comments, foreign_key: 'creator_id', dependent: :destroy
   accepts_nested_attributes_for :profile
 
-  include Rails.application.routes.url_helpers
   attr_writer :login
 
   def login
@@ -55,7 +54,7 @@ class User < ApplicationRecord
   end
 
   def avatar_url
-    profile.avatar.present? ? url_for(profile.avatar) : profile.default_avatar_url
+    profile.avatar_url
   end
 
   def all_courses(user, page, _)

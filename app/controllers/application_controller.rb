@@ -8,6 +8,10 @@ class ApplicationController < ActionController::Base
            status: :unprocessable_entity
   end
 
+  def index
+    head :ok
+  end
+
   private
 
   def configure_permitted_parameters

@@ -6,9 +6,17 @@ class Profile < ApplicationRecord
   belongs_to :user
   has_one_attached :avatar
 
+  include Rails.application.routes.url_helpers
+
   def full_name
     [first_name, middle_name, last_name].select(&:present?).join(' ')
   end
+
+  def avatar_url
+    avatar.present? ? url_for(avatar) : default_avatar_url
+  end
+
+  private
 
   def default_avatar_url
     hash = Digest::MD5.hexdigest(user.email.strip.downcase)

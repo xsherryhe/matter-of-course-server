@@ -20,6 +20,7 @@ class Course < ApplicationRecord
   has_many :enrollments, dependent: :destroy
   has_many :students, through: :enrollments
   has_many :posts, as: :postable, dependent: :destroy
+  has_one_attached :avatar
   accepts_nested_attributes_for :lessons, allow_destroy: true
 
   enum :status, %i[pending open closed], _default: :pending
@@ -44,6 +45,8 @@ class Course < ApplicationRecord
     .having('count(instructed_courses_instructors.instructor_id) = 1') 
   }
 
+  include Rails.application.routes.url_helpers
+
   attr_accessor :editor, :instructor_logins, :instructor_logins_by_validity
 
   def self.last_page?(page = 1)
@@ -52,7 +55,8 @@ class Course < ApplicationRecord
 
   def as_json(options = {})
     super({ include: [{ host: { methods: %i[name avatar_url] } }, 
-                      { instructors: { methods: %i[name avatar_url] } }] }
+                      { instructors: { methods: %i[name avatar_url] } }],
+            methods: %i[avatar_url] }
           .merge(options))
   end
 
@@ -94,6 +98,10 @@ class Course < ApplicationRecord
 
   def single_instructor?
     instructors.size == 1
+  end
+
+  def avatar_url
+    avatar.present? ? url_for(avatar) : "#{root_url}/default-course-avatar.svg"
   end
 
   def simplified_errors

@@ -16,14 +16,14 @@ User (for logged in users)
 //-has many received messages
 
 Profile
--avatar
+//-avatar
 //-first_name
 //-middle_name
 //-last_name
 //-belongs to user
 
 Course
--thumbnail
+-avatar
 //-title
 //-description
 //-enum pending/open/closed
