@@ -4,6 +4,8 @@ class Course < ApplicationRecord
   validates :title, presence: true
   validates :description, presence: true
   validates :instructors, presence: true
+  validates :avatar, content_type: { in: ['image/jpeg', 'image/jpg', 'image/png', 'image/svg', 'image/gif'],
+                                     message: 'is not an image (PNG, JPG, JPEG, SVG, or GIF)' }
   validate :valid_instructor_logins
   validate :logical_lessons_order
   validate :open_with_lessons
@@ -101,7 +103,7 @@ class Course < ApplicationRecord
   end
 
   def avatar_url
-    avatar.present? ? url_for(avatar) : "#{root_url}/default-course-avatar.svg"
+    avatar.attached? ? url_for(avatar) : "#{root_url}/default-course-avatar.svg"
   end
 
   def simplified_errors

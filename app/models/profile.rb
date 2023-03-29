@@ -13,7 +13,7 @@ class Profile < ApplicationRecord
   end
 
   def avatar_url
-    avatar.present? ? url_for(avatar) : default_avatar_url
+    avatar.attached? ? url_for(avatar) : default_avatar_url
   end
 
   private
