@@ -23,7 +23,7 @@ Profile
 //-belongs to user
 
 Course
--avatar
+//-avatar
 //-title
 //-description
 //-enum pending/open/closed
@@ -59,10 +59,8 @@ LessonSection
 //-body
 //-order
 //-belongs to lesson
--has many media (active storage/cloudinary)
-
-Media
--belongs to lesson_section
+-has many videos (active storage/cloudinary)
+-has many images (active storage/cloudinary)
 
 Assignment
 //-title
@@ -107,6 +105,8 @@ Comment
  
 // TO DO: Media/files/image storage
     --Add Cloudinary gem for production and change production config
+    --has_many videos on lesson sections -- as gallery at top of lesson section
+    --has_many images on lesson sections -- floating image gallery
 // TO DO: Delete unused devise views and routes
 // TO DO: Password validation
 // TO DO: Testing

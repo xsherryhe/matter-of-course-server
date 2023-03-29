@@ -45,7 +45,7 @@ class Lesson < ApplicationRecord
   private
 
   def lesson_sections_as_json
-    lesson_sections.order(order: :asc).as_json
+    lesson_sections.with_includes.order(order: :asc).as_json
   end
 
   def assignments_as_json
